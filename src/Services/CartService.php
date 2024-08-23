@@ -22,8 +22,9 @@ class CartService implements CartServiceContract
     public function getCart($create = false)
     {
         if (empty($this->_cart)) {
-            if ($create) {
-                $this->_cart = app(Cart::class)->firstOrCreate([
+            $this->_cart = app(Cart::class)->where('session_id', $this->session())->first();
+            if (!$this->_cart && $create) {
+                $this->_cart = app(Cart::class)->create([
                     'session_id' => $this->session(),
                 ]);
             }
