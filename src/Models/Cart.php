@@ -13,6 +13,14 @@ class Cart extends Model implements CartContract
     use VirtualColumn;
 
     protected $guarded = [];
+    protected $casts = [
+        'active' => 'boolean',
+    ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('active', true);
+    }
 
     public function lines()
     {
