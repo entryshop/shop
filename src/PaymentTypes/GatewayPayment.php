@@ -8,7 +8,7 @@ abstract class GatewayPayment extends AbstractPayment
 {
     protected $name = 'gateway';
 
-    public function intend()
+    public function pay()
     {
         $transaction = app(Transaction::class)->create([
             'payment_type' => $this->getName(),
@@ -17,8 +17,11 @@ abstract class GatewayPayment extends AbstractPayment
             'cart_id'      => $this->cart?->getKey(),
             'order_id'     => $this->order?->getKey(),
         ]);
+
         $url = $this->getPayUrl($transaction);
+
         $transaction->amopay_url = $url;
+        $transaction->status     = 'pending';
         $transaction->save();
         return $url;
     }
