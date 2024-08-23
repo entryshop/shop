@@ -27,6 +27,7 @@ class CartService implements CartServiceContract
                     'session_id' => $this->session(),
                 ]);
             }
+            return null;
         }
 
         return $this->_cart;
