@@ -7,11 +7,11 @@ use Entryshop\Shop\Contracts\CartService as CartServiceContract;
 
 class CartService implements CartServiceContract
 {
-    protected Cart $_cart;
+    protected ?Cart $_cart;
 
-    public function current()
+    public function current($create = false)
     {
-        return $this->getCart();
+        return $this->getCart($create);
     }
 
     public function setCart($cart)
@@ -19,13 +19,16 @@ class CartService implements CartServiceContract
         $this->_cart = $cart;
     }
 
-    public function getCart()
+    public function getCart($create = false)
     {
         if (empty($this->_cart)) {
-            $this->_cart = app(Cart::class)->firstOrCreate([
-                'session_id' => $this->session(),
-            ]);
+            if ($create) {
+                $this->_cart = app(Cart::class)->firstOrCreate([
+                    'session_id' => $this->session(),
+                ]);
+            }
         }
+
         return $this->_cart;
     }
 
