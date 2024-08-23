@@ -36,20 +36,10 @@ class Cart extends Model implements CartContract
 
     public function add($product, $quantity = 1)
     {
-        $line = $this->lines()->where('product_id', $product->id)->first();
-
-        if (empty($line)) {
-            $line = $this->lines()->create([
-                'product_id' => $product->id,
-                'quantity'   => 0,
-            ]);
-        }
-
-        $line->update([
-            'quantity' => $line->quantity + $quantity,
+        return $this->lines()->create([
+            'product_id' => $product->id,
+            'quantity'   => $quantity,
         ]);
-
-        return $line;
     }
 
     public function total()
