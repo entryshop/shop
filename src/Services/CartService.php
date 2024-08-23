@@ -7,7 +7,7 @@ use Entryshop\Shop\Contracts\CartService as CartServiceContract;
 
 class CartService implements CartServiceContract
 {
-    protected ?Cart $_cart;
+    protected ?Cart $_cart = null;
 
     public function current($create = false)
     {
