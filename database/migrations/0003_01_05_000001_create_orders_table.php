@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->decimal('total')->nullable()->index();
             $table->mediumText('data')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

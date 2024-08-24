@@ -9,11 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model implements OrderContract
 {
     use VirtualColumn;
     use HasReference;
+    use SoftDeletes;
 
     protected $guarded = [];
     protected static $reference_prefix = 'ord_';
