@@ -12,7 +12,7 @@ class CartHashGenerator implements \Entryshop\Shop\Contracts\CartHashGenerator
         foreach ($cart->lines as $line) {
             $hash .= static::getLineHash($line);
         }
-        $hash .= '$' . $cart->total;
+        $hash .= '$' . $cart->total . '-' . serialize($cart->getOriginal('data'));
         return static::encode($hash);
     }
 
@@ -23,6 +23,6 @@ class CartHashGenerator implements \Entryshop\Shop\Contracts\CartHashGenerator
 
     protected static function getLineHash($line)
     {
-        return '#' . $line->id . ':' . $line->product_id . '@' . $line->price . '*' . $line->quantity . '=' . $line->total;
+        return '#' . $line->id . ':' . $line->product_id . '@' . $line->price . '*' . $line->quantity . '=' . $line->total . '-' . serialize($line->getOriginal('data'));
     }
 }
