@@ -8,7 +8,7 @@ use Entryshop\Shop\Contracts\Cart;
 use Entryshop\Shop\Contracts\Order;
 
 /**
- * @method PaymentAuthorize authorize()
+ * @method PaymentAuthorize authorize(...$args)
  */
 abstract class AbstractPayment
 {
