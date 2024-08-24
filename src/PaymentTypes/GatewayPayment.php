@@ -10,9 +10,21 @@ abstract class GatewayPayment extends AbstractPayment
 {
     protected $name = 'gateway';
 
-    public function authorize(): ?PaymentAuthorize
+    public function authorize(...$args): ?PaymentAuthorize
     {
-        $url = $this->pay();
+        $data = [];
+        if (!empty($args[0])) {
+            if (is_array($args[0])) {
+                $data = $args[0];
+            }
+            if (is_string($args[0]) && isset($args[1])) {
+                $data = [
+                    $args[0] => $args[1],
+                ];
+            }
+        }
+
+        $url = $this->pay($data);
 
         return new PaymentAuthorize(
             redirectUrl: $url,
@@ -43,15 +55,15 @@ abstract class GatewayPayment extends AbstractPayment
         return new PaymentCapture(true);
     }
 
-    public function pay()
+    public function pay($data = [])
     {
-        $transaction = app(Transaction::class)->create([
+        $transaction = app(Transaction::class)->create(array_merge([
             'payment_type' => $this->getName(),
             'status'       => 'creating',
             'amount'       => $this->cart?->total ?? $this->order?->total,
             'cart_id'      => $this->cart?->getKey(),
             'order_id'     => $this->order?->getKey(),
-        ]);
+        ], $data));
 
         $url = $this->getPayUrl($transaction);
 
