@@ -2,7 +2,6 @@
 
 namespace Entryshop\Shop\PaymentTypes;
 
-use Entryshop\Admin\Support\HasContext;
 use Entryshop\Shop\Base\DataTransfer\PaymentAuthorize;
 use Entryshop\Shop\Contracts\Cart;
 use Entryshop\Shop\Contracts\Order;
@@ -12,8 +11,6 @@ use Entryshop\Shop\Contracts\Order;
  */
 abstract class AbstractPayment
 {
-    use HasContext;
-
     protected $name;
     /**
      * The instance of the cart.
