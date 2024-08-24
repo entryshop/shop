@@ -18,8 +18,8 @@ class ShopServiceProvider extends ServiceProvider
             $this->app->bind($contact, $implementation);
         }
 
-        $this->app->scoped('cart', function () {
-            return app(CartService::class);
+        $this->app->scoped('cart', function ($app) {
+            return $app->make(CartService::class);
         });
 
         $this->app->scoped('payments', function ($app) {
