@@ -4,6 +4,8 @@ namespace Entryshop\Shop\Models;
 
 use Entryshop\Admin\Support\Model\VirtualColumn;
 use Entryshop\Shop\Contracts\Cart as CartContract;
+use Entryshop\Shop\Contracts\CartCalculator;
+use Entryshop\Shop\Contracts\CartHashGenerator;
 use Entryshop\Shop\Contracts\Order;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -50,16 +52,32 @@ class Cart extends Model implements CartContract
         ]);
     }
 
-    public function total()
+    public function calculate()
     {
-        foreach ($this->lines as $line) {
-            $price = $line->product->price;
-            $total = $price * $line->quantity;
-            $line->update([
-                'price' => $price,
-                'total' => $total,
-            ]);
-        }
-        return $this->lines()->sum('total');
+        $cart = app(CartCalculator::class)->calculate($this);
+        $hash = app(CartHashGenerator::class)->generate($cart);
+        $cart->update([
+            'hash' => $hash,
+        ]);
+        return $cart;
+    }
+
+    public static function getCustomColumns(): array
+    {
+        return [
+            'id',
+            'shopper_type',
+            'shopper_id',
+            'session_id',
+            'status',
+            'total',
+            'hash',
+            'active',
+            'created_at',
+            'updated_at',
+            'order',
+            'lines',
+            'shopper',
+        ];
     }
 }

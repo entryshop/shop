@@ -21,4 +21,20 @@ class Line extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public static function getCustomColumns()
+    {
+        return [
+            'id',
+            'order_id',
+            'cart_id',
+            'product_id',
+            'status',
+            'quantity',
+            'price',
+            'total',
+            'product',
+            'cart',
+        ];
+    }
 }
