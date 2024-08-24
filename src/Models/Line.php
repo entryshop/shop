@@ -3,8 +3,10 @@
 namespace Entryshop\Shop\Models;
 
 use Entryshop\Admin\Support\Model\VirtualColumn;
+use Entryshop\Shop\Contracts;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Line extends Model
 {
@@ -14,12 +16,17 @@ class Line extends Model
 
     public function cart(): BelongsTo
     {
-        return $this->belongsTo(Cart::class);
+        return $this->belongsTo(get_class(resolve(Contracts\Cart::class)));
     }
 
-    public function product(): BelongsTo
+    public function order(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(get_class(resolve(Contracts\Order::class)));
+    }
+
+    public function purchasable(): MorphTo
+    {
+        return $this->MorphTo();
     }
 
     public static function getCustomColumns()
@@ -28,12 +35,13 @@ class Line extends Model
             'id',
             'order_id',
             'cart_id',
-            'product_id',
+            'purchasable_id',
+            'purchasable_type',
+            'purchasable',
             'status',
             'quantity',
             'price',
             'total',
-            'product',
             'cart',
             'created_at',
             'updated_at',

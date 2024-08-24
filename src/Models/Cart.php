@@ -10,12 +10,17 @@ use Entryshop\Shop\Contracts\CartValidator;
 use Entryshop\Shop\Contracts\Order;
 use Entryshop\Shop\Contracts\OrderGenerator;
 use Entryshop\Shop\Contracts\Purchasable;
+use Entryshop\Shop\Models\Traits\HasReference;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Cart extends Model implements CartContract
 {
     use VirtualColumn;
+    use HasReference;
+
+    protected static $reference_prefix = 'cart_';
 
     protected $guarded = [];
     protected $casts = [
@@ -32,6 +37,11 @@ class Cart extends Model implements CartContract
         return $this->hasMany(Line::class);
     }
 
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(get_class(resolve(Order::class)));
+    }
+
     public function shopper(): MorphTo
     {
         return $this->morphTo('shopper');
@@ -42,12 +52,13 @@ class Cart extends Model implements CartContract
         return app(OrderGenerator::class)->generate($this, ...$args);
     }
 
-    public function add(Purchasable $product, $quantity = 1)
+    public function add(Purchasable $purchasable, $quantity = 1)
     {
         return $this->lines()->create([
-            'product_id' => $product->getKey(),
-            'price'      => $product->getPrice(),
-            'quantity'   => $quantity,
+            'purchasable_id'   => $purchasable->getKey(),
+            'purchasable_type' => $purchasable->getMorphClass(),
+            'price'            => $purchasable->getPrice(),
+            'quantity'         => $quantity,
         ]);
     }
 
@@ -71,6 +82,7 @@ class Cart extends Model implements CartContract
     {
         return [
             'id',
+            'reference',
             'shopper_type',
             'shopper_id',
             'session_id',

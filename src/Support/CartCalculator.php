@@ -9,13 +9,13 @@ class CartCalculator implements \Entryshop\Shop\Contracts\CartCalculator
     public static function calculate(Cart $cart): Cart
     {
         foreach ($cart->lines as $line) {
-            $price = $line->product->price;
+            $price = $line->purchasable->price;
             $total = $price * $line->quantity;
             $line->update([
                 'price' => $price,
                 'total' => $total,
-                'name'  => $line->product?->name ?? '',
-                'image' => $line->product?->image ?? '',
+                'name'  => $line->purchasable?->name ?? '',
+                'image' => $line->purchasable?->image ?? '',
             ]);
         }
         $cart->total = $cart->lines()->sum('total');

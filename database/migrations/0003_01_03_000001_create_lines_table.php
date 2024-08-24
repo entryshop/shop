@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignUlid('order_id')->nullable()->index();
             $table->foreignUlid('cart_id')->nullable()->index();
-            $table->foreignUlid('product_id')->nullable()->index();
+            $table->nullableMorphs('purchasable');
             $table->string('status')->nullable()->index();
             $table->integer('quantity')->default(1)->index();
             $table->decimal('price', 14)->nullable()->index();

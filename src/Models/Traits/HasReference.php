@@ -14,7 +14,7 @@ trait HasReference
     {
         static::creating(function ($model) {
             if (empty($model->reference)) {
-                $model->reference = (static::$reference_prefix ?? '') . Str::random();
+                $model->reference = (static::$reference_prefix ?? '') . Str::ulid();
             }
         });
     }

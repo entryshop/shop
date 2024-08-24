@@ -32,7 +32,7 @@ class Order extends Model implements OrderContract
 
     public function cart(): BelongsTo
     {
-        return $this->belongsTo(Cart::class);
+        return $this->belongsTo(get_class(resolve(\Entryshop\Shop\Contracts\Cart::class)));
     }
 
     public static function getCustomColumns(): array

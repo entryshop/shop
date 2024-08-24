@@ -11,6 +11,7 @@ return new class extends Migration {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->nullableMorphs('shopper');
+            $table->string('reference')->unique()->index();
             $table->string('session_id')->nullable()->index();
             $table->string('status')->nullable()->index();
             $table->decimal('total')->nullable();
