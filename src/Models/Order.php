@@ -40,6 +40,7 @@ class Order extends Model implements OrderContract
         return [
             'id',
             'reference',
+            'number',
             'shopper_type',
             'shopper_id',
             'status',

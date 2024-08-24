@@ -12,6 +12,7 @@ class OrderGenerator implements \Entryshop\Shop\Contracts\OrderGenerator
         $order = app(Order::class)->create([
             'cart_id' => $cart->getKey(),
             'total'   => $cart->total,
+            'number'  => 1000 + app(Order::class)->count(),
         ]);
 
         if ($cart->shopper) {

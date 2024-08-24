@@ -52,14 +52,13 @@ class Cart extends Model implements CartContract
         return app(OrderGenerator::class)->generate($this, ...$args);
     }
 
-    public function add(Purchasable $purchasable, $quantity = 1)
+    public function add(Purchasable $purchasable, $quantity = 1, $data = [])
     {
-        return $this->lines()->create([
+        return $this->lines()->create(array_merge([
             'purchasable_id'   => $purchasable->getKey(),
             'purchasable_type' => $purchasable->getMorphClass(),
-            'price'            => $purchasable->getPrice(),
             'quantity'         => $quantity,
-        ]);
+        ], $data));
     }
 
     public function calculate()
