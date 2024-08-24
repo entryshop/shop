@@ -14,6 +14,8 @@ class CartCalculator implements \Entryshop\Shop\Contracts\CartCalculator
             $line->update([
                 'price' => $price,
                 'total' => $total,
+                'name'  => $line->product?->name ?? '',
+                'image' => $line->product?->image ?? '',
             ]);
         }
         $cart->total = $cart->lines()->sum('total');

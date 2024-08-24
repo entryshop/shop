@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('order_id')->nullable()->index();
             $table->foreignId('cart_id')->nullable()->index();
+            $table->string('reference')->unique()->index();
             $table->string('payment_type')->nullable()->index();
             $table->string('amount')->nullable()->index();
             $table->string('status')->nullable()->index();

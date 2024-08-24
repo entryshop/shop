@@ -3,9 +3,13 @@
 namespace Entryshop\Shop\PaymentTypes;
 
 use Entryshop\Admin\Support\HasContext;
+use Entryshop\Shop\Base\DataTransfer\PaymentAuthorize;
 use Entryshop\Shop\Contracts\Cart;
 use Entryshop\Shop\Contracts\Order;
 
+/**
+ * @method PaymentAuthorize authorize()
+ */
 abstract class AbstractPayment
 {
     use HasContext;
@@ -33,18 +37,12 @@ abstract class AbstractPayment
     {
         $this->order = $order;
         $this->cart  = null;
-
         return $this;
     }
 
     public function getName(): string
     {
         return $this->name;
-    }
-
-    public function getTotal()
-    {
-        return $this->cart?->total() ?? $this->order?->total;
     }
 
 }

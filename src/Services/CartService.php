@@ -55,7 +55,9 @@ class CartService implements CartServiceContract
 
     public function associate($shopper)
     {
-        $this->_cart->shopper()->associate($this->_shopper);
+        $this->_cart->shopper()->associate($shopper);
+        $this->_cart->save();
+        return $this->_cart;
     }
 
     public function session()

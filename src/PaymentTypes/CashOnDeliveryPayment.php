@@ -23,7 +23,8 @@ class CashOnDeliveryPayment extends AbstractPayment
 
         return new PaymentAuthorize(
             success: true,
-            orderId: $this->order->getKey(),
+            orderId: $this->order?->getKey(),
+            cartId: $this->cart?->getKey(),
             paymentType: $this->getName()
         );
     }

@@ -11,6 +11,8 @@ return [
         Shop\Contracts\Transaction::class       => Shop\Models\Transaction::class,
         Shop\Contracts\CartHashGenerator::class => Shop\Support\CartHashGenerator::class,
         Shop\Contracts\CartCalculator::class    => Shop\Support\CartCalculator::class,
+        Shop\Contracts\OrderGenerator::class    => Shop\Support\OrderGenerator::class,
+        Shop\Contracts\CartValidator::class     => Shop\Support\CartValidator::class,
     ],
     'cart'     => [
         'session_key' => 'entryshop_cart',

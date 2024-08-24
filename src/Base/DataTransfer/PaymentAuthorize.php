@@ -8,7 +8,9 @@ class PaymentAuthorize
         public bool $success = false,
         public ?string $message = null,
         public ?int $orderId = null,
-        public ?string $paymentType = null
+        public ?int $cartId = null,
+        public ?string $paymentType = null,
+        public ?string $redirectUrl = null,
     ) {
         //
     }

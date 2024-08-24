@@ -35,6 +35,8 @@ class Line extends Model
             'total',
             'product',
             'cart',
+            'created_at',
+            'updated_at',
         ];
     }
 }

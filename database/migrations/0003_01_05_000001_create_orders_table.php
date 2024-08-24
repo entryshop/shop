@@ -10,7 +10,10 @@ return new class extends Migration {
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->nullableMorphs('shopper');
             $table->foreignId('cart_id')->nullable()->index();
+            $table->string('number')->nullable()->index();
+            $table->string('reference')->unique()->index();
             $table->string('status')->nullable()->index();
             $table->string('payment_status')->nullable()->index();
             $table->decimal('total')->nullable()->index();

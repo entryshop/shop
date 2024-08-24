@@ -6,7 +6,10 @@ use Entryshop\Admin\Support\Model\VirtualColumn;
 use Entryshop\Shop\Contracts\Cart as CartContract;
 use Entryshop\Shop\Contracts\CartCalculator;
 use Entryshop\Shop\Contracts\CartHashGenerator;
+use Entryshop\Shop\Contracts\CartValidator;
 use Entryshop\Shop\Contracts\Order;
+use Entryshop\Shop\Contracts\OrderGenerator;
+use Entryshop\Shop\Contracts\Purchasable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -34,20 +37,16 @@ class Cart extends Model implements CartContract
         return $this->morphTo('shopper');
     }
 
-    public function createOrder(): Order
+    public function createOrder(...$args): Order
     {
-        $order = app(Order::class)->create([
-            'cart_id' => $this->id,
-            'total'   => $this->total(),
-        ]);
-
-        return $order;
+        return app(OrderGenerator::class)->generate($this, ...$args);
     }
 
-    public function add($product, $quantity = 1)
+    public function add(Purchasable $product, $quantity = 1)
     {
         return $this->lines()->create([
-            'product_id' => $product->id,
+            'product_id' => $product->getKey(),
+            'price'      => $product->getPrice(),
             'quantity'   => $quantity,
         ]);
     }
@@ -60,6 +59,12 @@ class Cart extends Model implements CartContract
             'hash' => $hash,
         ]);
         return $cart;
+    }
+
+    public function validate()
+    {
+        $validator = app(CartValidator::class);
+        return $validator->validate($this);
     }
 
     public static function getCustomColumns(): array
