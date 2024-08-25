@@ -1,12 +1,13 @@
 <?php
 
-namespace Entryshop\Shop\Support;
+namespace Entryshop\Shop\Pipelines\Carts;
 
+use Closure;
 use Entryshop\Shop\Contracts\Cart;
 
-class CartCalculator implements \Entryshop\Shop\Contracts\CartCalculator
+class CartCalculator
 {
-    public static function calculate(Cart $cart): Cart
+    public static function handle(Cart $cart, Closure $next): Cart
     {
         foreach ($cart->lines as $line) {
             $price = $line->purchasable->price;
@@ -19,7 +20,6 @@ class CartCalculator implements \Entryshop\Shop\Contracts\CartCalculator
             ]);
         }
         $cart->total = $cart->lines()->sum('total');
-        $cart->save();
-        return $cart;
+        return $next($cart);
     }
 }

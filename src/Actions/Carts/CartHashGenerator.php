@@ -1,12 +1,13 @@
 <?php
 
-namespace Entryshop\Shop\Support;
+namespace Entryshop\Shop\Actions\Carts;
 
+use Entryshop\Shop\Actions\AbstractAction;
 use Entryshop\Shop\Contracts\Cart;
 
-class CartHashGenerator implements \Entryshop\Shop\Contracts\CartHashGenerator
+class CartHashGenerator extends AbstractAction
 {
-    public static function generate(Cart $cart): string
+    public static function execute(Cart $cart)
     {
         $hash = '';
         foreach ($cart->lines as $line) {
