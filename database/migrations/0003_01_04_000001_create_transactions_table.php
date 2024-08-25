@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('payment_type')->nullable()->index();
             $table->string('amount')->nullable()->index();
             $table->string('status')->nullable()->index();
-            $table->string('external_reference')->nullable()->index();
+            $table->string('external_id')->nullable()->index();
             $table->mediumText('data')->nullable();
             $table->timestamps();
             $table->softDeletes();
