@@ -9,7 +9,7 @@ namespace Entryshop\Shop\Contracts;
  */
 interface Cart
 {
-    public function createOrder(): Order;
+    public function createOrder();
 
     public function calculate();
 

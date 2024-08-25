@@ -3,11 +3,12 @@
 namespace Entryshop\Shop\Models;
 
 use Entryshop\Admin\Support\Model\VirtualColumn;
+use Entryshop\Shop\Actions\Carts\AddOrUpdatePurchasable;
+use Entryshop\Shop\Contracts;
 use Entryshop\Shop\Contracts\Cart as CartContract;
 use Entryshop\Shop\Contracts\CartCalculator;
 use Entryshop\Shop\Contracts\CartHashGenerator;
 use Entryshop\Shop\Contracts\CartValidator;
-use Entryshop\Shop\Contracts\Order;
 use Entryshop\Shop\Contracts\OrderGenerator;
 use Entryshop\Shop\Contracts\Purchasable;
 use Entryshop\Shop\Models\Traits\HasReference;
@@ -34,12 +35,12 @@ class Cart extends Model implements CartContract
 
     public function lines()
     {
-        return $this->hasMany(Line::class);
+        return $this->hasMany(get_class(resolve(Contracts\Line::class)));
     }
 
     public function order(): BelongsTo
     {
-        return $this->belongsTo(get_class(resolve(Order::class)));
+        return $this->belongsTo(get_class(resolve(Contracts\Order::class)));
     }
 
     public function shopper(): MorphTo
@@ -47,18 +48,17 @@ class Cart extends Model implements CartContract
         return $this->morphTo('shopper');
     }
 
-    public function createOrder(...$args): Order
+    public function createOrder(...$args)
     {
         return app(OrderGenerator::class)->generate($this, ...$args);
     }
 
-    public function add(Purchasable $purchasable, $quantity = 1, $data = [])
+    public function add(Purchasable $purchasable, $quantity = 1, $data = [], $refresh = true)
     {
-        return $this->lines()->create(array_merge([
-            'purchasable_id'   => $purchasable->getKey(),
-            'purchasable_type' => $purchasable->getMorphClass(),
-            'quantity'         => $quantity,
-        ], $data));
+        return app(
+            config('shop.actions.add_to_cart', AddOrUpdatePurchasable::class)
+        )->execute($this, $purchasable, $quantity, $data)
+            ->then(fn() => $refresh ? $this->refresh()->calculate() : $this);
     }
 
     public function calculate()
