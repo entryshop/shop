@@ -67,8 +67,8 @@ abstract class GatewayPayment extends AbstractPayment
 
         $url = $this->getPayUrl($transaction);
 
-        $transaction->amopay_url = $url;
-        $transaction->status     = 'pending';
+        $transaction->status  = 'pending';
+        $transaction->pay_url = $url;
         $transaction->save();
 
         return $url;
