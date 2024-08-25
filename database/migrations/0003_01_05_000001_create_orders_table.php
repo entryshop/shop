@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('reference')->unique()->index();
             $table->string('status')->nullable()->index();
             $table->string('payment_status')->nullable()->index();
+            $table->string('fulfillment_status')->nullable()->index();
             $table->decimal('total')->nullable()->index();
             $table->mediumText('data')->nullable();
             $table->timestamps();

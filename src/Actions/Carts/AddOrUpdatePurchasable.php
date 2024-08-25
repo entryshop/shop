@@ -7,6 +7,7 @@ use Entryshop\Shop\Contracts\Cart;
 use Entryshop\Shop\Contracts\Line;
 use Entryshop\Shop\Contracts\Purchasable;
 use Entryshop\Shop\Exceptions\InvalidCartLineQuantityException;
+use Exception;
 
 class AddOrUpdatePurchasable extends AbstractAction
 {
@@ -44,7 +45,7 @@ class AddOrUpdatePurchasable extends AbstractAction
                 ]);
             }
         } else {
-            throw new \Exception('Invalid LineOrPurchasable');
+            throw new Exception('Invalid LineOrPurchasable');
         }
         $existing->update($data);
         return $this;

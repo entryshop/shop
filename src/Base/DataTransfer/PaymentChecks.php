@@ -2,7 +2,10 @@
 
 namespace Entryshop\Shop\Base\DataTransfer;
 
-class PaymentChecks implements \ArrayAccess, \Iterator
+use ArrayAccess;
+use Iterator;
+
+class PaymentChecks implements ArrayAccess, Iterator
 {
     private int $position = 0;
 

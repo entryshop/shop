@@ -7,7 +7,6 @@ use Entryshop\Shop\Actions\Carts\AddOrUpdatePurchasable;
 use Entryshop\Shop\Actions\Carts\CartHashGenerator;
 use Entryshop\Shop\Contracts;
 use Entryshop\Shop\Contracts\Cart as CartContract;
-use Entryshop\Shop\Contracts\OrderGenerator;
 use Entryshop\Shop\Contracts\Purchasable;
 use Entryshop\Shop\Models\Traits\HasReference;
 use Entryshop\Shop\Pipelines\Carts\CartCalculator;
@@ -51,7 +50,15 @@ class Cart extends Model implements CartContract
 
     public function createOrder(...$args)
     {
-        return app(OrderGenerator::class)->generate($this, ...$args);
+        $order = app(
+            config('shop.actions.create_order')
+        )->execute($this, ...$args);
+
+        return app(Pipeline::class)
+            ->send($order)
+            ->through(
+                config('shop.pipelines.order_created')
+            )->thenReturn();
     }
 
     public function updateLine($line_id, $quantity = 1, $data = [], $refresh = true)
@@ -93,21 +100,24 @@ class Cart extends Model implements CartContract
         return $cart;
     }
 
-    public function validate()
+    public function validate($throw = true)
     {
-        $errors = [];
         $result = app(Pipeline::class)
-            ->send([$this, $errors])
+            ->send([
+                'cart'   => $this,
+                'errors' => [],
+                'throw'  => $throw,
+            ])
             ->through(
                 config('shop.pipelines.cart_validate', [
                     CartValidator::class,
                 ])
             )->thenReturn();
 
-        if (empty($result[1])) {
+        if (empty($result['errors'])) {
             return true;
         }
-        return $result[1];
+        return $result['errors'];
     }
 
     public static function getCustomColumns(): array

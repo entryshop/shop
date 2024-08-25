@@ -1,13 +1,14 @@
 <?php
 
-namespace Entryshop\Shop\Support;
+namespace Entryshop\Shop\Actions\Carts;
 
+use Entryshop\Shop\Actions\AbstractAction;
 use Entryshop\Shop\Contracts\Cart;
 use Entryshop\Shop\Contracts\Order;
 
-class OrderGenerator implements \Entryshop\Shop\Contracts\OrderGenerator
+class CreateOrder extends AbstractAction
 {
-    public static function generate(Cart $cart, ...$args): Order
+    public static function execute(Cart $cart, ...$args)
     {
         $order = app(Order::class)->create([
             'cart_id' => $cart->getKey(),

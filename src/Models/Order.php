@@ -45,6 +45,7 @@ class Order extends Model implements OrderContract
             'shopper_id',
             'status',
             'payment_status',
+            'fulfillment_status',
             'total',
             'created_at',
             'updated_at',

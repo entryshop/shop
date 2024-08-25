@@ -2,9 +2,7 @@
 
 namespace Entryshop\Shop\Exceptions;
 
-use Exception;
-
-class InvalidCartLineQuantityException extends Exception
+class InvalidCartLineQuantityException extends ShopException
 {
     //
 }

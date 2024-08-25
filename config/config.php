@@ -1,7 +1,7 @@
 <?php
 
 use Entryshop\Shop;
-use Entryshop\Shop\Pipelines\Carts\CartCalculator;
+use Entryshop\Shop\Pipelines;
 
 return [
     'bindings' => [
@@ -11,7 +11,6 @@ return [
         Shop\Contracts\Order::class          => Shop\Models\Order::class,
         Shop\Contracts\Transaction::class    => Shop\Models\Transaction::class,
         Shop\Contracts\Line::class           => Shop\Models\Line::class,
-        Shop\Contracts\OrderGenerator::class => Shop\Support\OrderGenerator::class,
     ],
     'cart'     => [
         'session_key' => 'entryshop_cart',
@@ -26,16 +25,20 @@ return [
 
     'actions' => [
         'add_to_cart'            => Shop\Actions\Carts\AddOrUpdatePurchasable::class,
+        'create_order'           => Shop\Actions\Carts\CreateOrder::class,
         'get_existing_cart_line' => Shop\Actions\Carts\GetExistingCartLine::class,
         'hash_generate'          => Shop\Actions\Carts\CartHashGenerator::class,
     ],
 
     'pipelines' => [
         'cart_calculate' => [
-            CartCalculator::class,
+            Pipelines\Carts\CartCalculator::class,
         ],
         'cart_validate'  => [
-            Shop\Pipelines\Carts\CartValidator::class,
+            Pipelines\Carts\CartValidator::class,
+        ],
+        'order_created'  => [
+            Pipelines\Orders\UpdateOrderFulfillmentStatus::class,
         ],
     ],
 ];

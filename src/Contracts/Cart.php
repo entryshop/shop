@@ -5,7 +5,9 @@ namespace Entryshop\Shop\Contracts;
 /**
  * @property array lines
  * @property numeric total
+ * @property string hash
  * @property ?Order order
+ * @property ?Shopper shopper
  */
 interface Cart
 {
@@ -13,5 +15,5 @@ interface Cart
 
     public function calculate();
 
-    public function validate();
+    public function validate($throw = true);
 }
