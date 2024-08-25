@@ -41,6 +41,7 @@ class Transaction extends Model implements \Entryshop\Shop\Contracts\Transaction
             'status',
             'order',
             'cart',
+            'external_reference',
             'created_at',
             'updated_at',
         ];
