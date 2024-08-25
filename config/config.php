@@ -6,13 +6,12 @@ use Entryshop\Shop\Pipelines\Carts\CartCalculator;
 return [
     'bindings' => [
         Shop\Contracts\CartService::class    => Shop\Services\CartService::class,
-        Shop\Contracts\Cart::class           => Shop\Models\Cart::class,
         Shop\Contracts\PaymentService::class => Shop\Services\PaymentService::class,
+        Shop\Contracts\Cart::class           => Shop\Models\Cart::class,
         Shop\Contracts\Order::class          => Shop\Models\Order::class,
         Shop\Contracts\Transaction::class    => Shop\Models\Transaction::class,
         Shop\Contracts\Line::class           => Shop\Models\Line::class,
         Shop\Contracts\OrderGenerator::class => Shop\Support\OrderGenerator::class,
-        Shop\Contracts\CartValidator::class  => Shop\Support\CartValidator::class,
     ],
     'cart'     => [
         'session_key' => 'entryshop_cart',
@@ -35,6 +34,8 @@ return [
         'cart_calculate' => [
             CartCalculator::class,
         ],
-        'cart_validate'  => [],
+        'cart_validate'  => [
+            Shop\Pipelines\Carts\CartValidator::class,
+        ],
     ],
 ];

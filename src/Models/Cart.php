@@ -7,11 +7,11 @@ use Entryshop\Shop\Actions\Carts\AddOrUpdatePurchasable;
 use Entryshop\Shop\Actions\Carts\CartHashGenerator;
 use Entryshop\Shop\Contracts;
 use Entryshop\Shop\Contracts\Cart as CartContract;
-use Entryshop\Shop\Contracts\CartValidator;
 use Entryshop\Shop\Contracts\OrderGenerator;
 use Entryshop\Shop\Contracts\Purchasable;
 use Entryshop\Shop\Models\Traits\HasReference;
 use Entryshop\Shop\Pipelines\Carts\CartCalculator;
+use Entryshop\Shop\Pipelines\Carts\CartValidator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -95,8 +95,19 @@ class Cart extends Model implements CartContract
 
     public function validate()
     {
-        $validator = app(CartValidator::class);
-        return $validator->validate($this);
+        $errors = [];
+        $result = app(Pipeline::class)
+            ->send([$this, $errors])
+            ->through(
+                config('shop.pipelines.cart_validate', [
+                    CartValidator::class,
+                ])
+            )->thenReturn();
+
+        if (empty($result[1])) {
+            return true;
+        }
+        return $result[1];
     }
 
     public static function getCustomColumns(): array
