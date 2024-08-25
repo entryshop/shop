@@ -5,7 +5,6 @@ namespace Entryshop\Shop\PaymentTypes;
 use Entryshop\Shop\Base\DataTransfer\PaymentAuthorize;
 use Entryshop\Shop\Base\DataTransfer\PaymentCapture;
 use Entryshop\Shop\Base\DataTransfer\PaymentRefund;
-use Entryshop\Shop\Contracts\Transaction;
 
 class CashOnDeliveryPayment extends AbstractPayment
 {
@@ -29,12 +28,12 @@ class CashOnDeliveryPayment extends AbstractPayment
         );
     }
 
-    public function refund(Transaction $transaction, int $amount = 0, $notes = null): PaymentRefund
+    public function refund(): PaymentRefund
     {
         return new PaymentRefund(true);
     }
 
-    public function capture(Transaction $transaction, $amount = 0): PaymentCapture
+    public function capture(): PaymentCapture
     {
         $this->order?->update([
             'payment_status' => 'captured',

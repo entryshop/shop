@@ -4,7 +4,7 @@ namespace Entryshop\Shop\Contracts;
 
 /**
  * @property array lines
- * @property numeric total
+ * @property integer total
  * @property string hash
  * @property ?Order order
  * @property ?Shopper shopper
