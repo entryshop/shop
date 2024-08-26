@@ -4,6 +4,8 @@ namespace Entryshop\Shop;
 
 use Entryshop\Shop\Contracts\CartService;
 use Entryshop\Shop\Contracts\PaymentService;
+use Entryshop\Shop\Contracts\Product;
+use Entryshop\Shop\Observers\ProductObserver;
 use Illuminate\Support\ServiceProvider;
 
 class ShopServiceProvider extends ServiceProvider
@@ -30,5 +32,13 @@ class ShopServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
+        $this->registerObservers();
     }
+
+    protected function registerObservers(): void
+    {
+        app(resolve_class(Product::class))::observe(ProductObserver::class);
+    }
+
 }

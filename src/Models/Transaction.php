@@ -21,12 +21,12 @@ class Transaction extends Model implements \Entryshop\Shop\Contracts\Transaction
 
     public function cart(): BelongsTo
     {
-        return $this->belongsTo(get_class(resolve(Cart::class)));
+        return $this->belongsTo(resolve_class(Cart::class));
     }
 
     public function order(): BelongsTo
     {
-        return $this->belongsTo(get_class(resolve(Order::class)));
+        return $this->belongsTo(resolve_class(Order::class));
     }
 
     public static function getCustomColumns(): array

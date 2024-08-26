@@ -25,6 +25,7 @@ class Cart extends Model implements CartContract
     protected static $reference_prefix = 'cart_';
 
     protected $guarded = [];
+
     protected $casts = [
         'active' => 'boolean',
     ];
@@ -36,12 +37,12 @@ class Cart extends Model implements CartContract
 
     public function lines()
     {
-        return $this->hasMany(get_class(resolve(Contracts\Line::class)));
+        return $this->hasMany(resolve_class(Contracts\Line::class));
     }
 
     public function order(): BelongsTo
     {
-        return $this->belongsTo(get_class(resolve(Contracts\Order::class)));
+        return $this->belongsTo(resolve_class(Contracts\Order::class));
     }
 
     public function shopper(): MorphTo

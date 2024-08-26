@@ -16,17 +16,37 @@ class Line extends Model implements Contracts\Line
 
     public function cart(): BelongsTo
     {
-        return $this->belongsTo(get_class(resolve(Contracts\Cart::class)));
+        return $this->belongsTo(resolve_class(Contracts\Cart::class));
     }
 
     public function order(): BelongsTo
     {
-        return $this->belongsTo(get_class(resolve(Contracts\Order::class)));
+        return $this->belongsTo(resolve_class(Contracts\Order::class));
     }
 
     public function purchasable(): MorphTo
     {
         return $this->MorphTo();
+    }
+
+    public function getTotal(): Contracts\Price
+    {
+        return app(Contracts\Price::class, [
+            'value'    => $this->total,
+            'currency' => $this->cart->currency ?? config('shop.default_currency'),
+            'decimals' => config('shop.default_currency_decimals'),
+            'locale'   => $locale ?? app()->getLocale(),
+        ]);
+    }
+
+    public function getUnitPrice(): Contracts\Price
+    {
+        return app(Contracts\Price::class, [
+            'value'    => $this->price,
+            'currency' => $this->cart->currency ?? config('shop.default_currency'),
+            'decimals' => config('shop.default_currency_decimals'),
+            'locale'   => $locale ?? app()->getLocale(),
+        ]);
     }
 
     public static function getCustomColumns()
