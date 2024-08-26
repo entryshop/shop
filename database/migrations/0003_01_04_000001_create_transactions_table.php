@@ -14,7 +14,8 @@ return new class extends Migration {
             $table->foreignId('cart_id')->nullable()->index();
             $table->string('reference')->unique()->index();
             $table->string('payment_type')->nullable()->index();
-            $table->string('amount')->nullable()->index();
+            $table->string('currency')->nullable()->index();
+            $table->unsignedBigInteger('amount')->nullable()->index();
             $table->string('status')->nullable()->index();
             $table->string('external_id')->nullable()->index();
             $table->mediumText('data')->nullable();

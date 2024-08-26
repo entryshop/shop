@@ -38,6 +38,7 @@ class Transaction extends Model implements \Entryshop\Shop\Contracts\Transaction
             'cart_id',
             'payment_type',
             'amount',
+            'currency',
             'status',
             'order',
             'cart',

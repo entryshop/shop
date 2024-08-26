@@ -53,6 +53,7 @@ class Order extends Model implements OrderContract
             'cart_id',
             'lines',
             'shopper',
+            'currency',
         ];
     }
 

@@ -11,6 +11,7 @@ use Entryshop\Shop\Contracts\Purchasable;
 use Entryshop\Shop\Models\Traits\HasReference;
 use Entryshop\Shop\Pipelines\Carts\CartCalculator;
 use Entryshop\Shop\Pipelines\Carts\CartValidator;
+use Entryshop\Shop\Support\Price;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -120,6 +121,16 @@ class Cart extends Model implements CartContract
         return $result['errors'];
     }
 
+    public function getTotal($locale = null): Price
+    {
+        return app(Contracts\Price::class, [
+            'value'    => $this->total,
+            'currency' => $this->currency ?? config('shop.default_currency'),
+            'decimals' => config('shop.default_currency_decimals'),
+            'locale'   => $locale ?? app()->getLocale(),
+        ]);
+    }
+
     public static function getCustomColumns(): array
     {
         return [
@@ -137,6 +148,7 @@ class Cart extends Model implements CartContract
             'order',
             'lines',
             'shopper',
+            'currency',
         ];
     }
 }

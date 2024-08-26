@@ -14,7 +14,8 @@ return new class extends Migration {
             $table->string('reference')->unique()->index();
             $table->string('session_id')->nullable()->index();
             $table->string('status')->nullable()->index();
-            $table->decimal('total')->nullable();
+            $table->string('currency')->nullable()->index();
+            $table->unsignedBigInteger('total')->nullable();
             $table->string('hash')->nullable()->unique();
             $table->boolean('active')->default(true)->index();
             $table->mediumText('data')->nullable();

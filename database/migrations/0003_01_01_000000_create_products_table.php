@@ -20,11 +20,11 @@ return new class extends Migration {
     private function productCommonFields($table)
     {
         $table->string('status')->nullable();
+        $table->unsignedInteger('price')->nullable();
         $table->string('sku')->unique()->nullable()->index();
         $table->mediumText('description')->nullable();
         $table->string('name')->nullable();
         $table->text('images')->nullable();
-        $table->decimal('price', 14)->nullable()->index();
     }
 
     public function down(): void
