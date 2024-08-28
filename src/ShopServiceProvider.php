@@ -2,6 +2,7 @@
 
 namespace Entryshop\Shop;
 
+use Entryshop\Admin\Admin\AdminPanel;
 use Entryshop\Shop\Contracts\CartService;
 use Entryshop\Shop\Contracts\PaymentService;
 use Entryshop\Shop\Contracts\Product;
@@ -32,8 +33,9 @@ class ShopServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-
+        $this->loadRoutesFrom(__DIR__ . '/../routes/admin.php');
         $this->registerObservers();
+        $this->registerAdminMenu();
     }
 
     protected function registerObservers(): void
@@ -41,4 +43,10 @@ class ShopServiceProvider extends ServiceProvider
         app(resolve_class(Product::class))::observe(ProductObserver::class);
     }
 
+    public function registerAdminMenu()
+    {
+        add_hook_action(AdminPanel::HOOK_ACTION_ADMIN_MENU, function ($position = null) {
+            Shop::registerAdminMenu($position);
+        });
+    }
 }
