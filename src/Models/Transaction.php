@@ -2,10 +2,10 @@
 
 namespace Entryshop\Shop\Models;
 
+use Entryshop\Admin\Support\Model\HasReference;
 use Entryshop\Admin\Support\Model\VirtualColumn;
 use Entryshop\Shop\Contracts\Cart;
 use Entryshop\Shop\Contracts\Order;
-use Entryshop\Shop\Models\Traits\HasReference;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;

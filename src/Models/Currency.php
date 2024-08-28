@@ -2,7 +2,7 @@
 
 namespace Entryshop\Shop\Models;
 
-use Entryshop\Shop\Models\Traits\HasDefaultRecord;
+use Entryshop\Admin\Support\Model\HasDefaultRecord;
 use Illuminate\Database\Eloquent\Model;
 
 class Currency extends Model

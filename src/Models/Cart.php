@@ -2,13 +2,13 @@
 
 namespace Entryshop\Shop\Models;
 
+use Entryshop\Admin\Support\Model\HasReference;
 use Entryshop\Admin\Support\Model\VirtualColumn;
 use Entryshop\Shop\Actions\Carts\AddOrUpdatePurchasable;
 use Entryshop\Shop\Actions\Carts\CartHashGenerator;
 use Entryshop\Shop\Contracts;
 use Entryshop\Shop\Contracts\Cart as CartContract;
 use Entryshop\Shop\Contracts\Purchasable;
-use Entryshop\Shop\Models\Traits\HasReference;
 use Entryshop\Shop\Pipelines\Carts\CartCalculator;
 use Entryshop\Shop\Pipelines\Carts\CartValidator;
 use Entryshop\Shop\Support\Price;

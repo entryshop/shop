@@ -2,11 +2,11 @@
 
 namespace Entryshop\Shop\Models;
 
+use Entryshop\Admin\Support\Model\HasReference;
 use Entryshop\Admin\Support\Model\VirtualColumn;
 use Entryshop\Shop\Contracts\Cart as CartContract;
 use Entryshop\Shop\Contracts\Line as LineContract;
 use Entryshop\Shop\Contracts\Order as OrderContract;
-use Entryshop\Shop\Models\Traits\HasReference;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
