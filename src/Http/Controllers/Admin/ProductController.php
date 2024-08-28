@@ -12,9 +12,11 @@ class ProductController extends CrudController
 
     public $model = Product::class;
     public $route = 'products';
+    public $lang = 'shop::product';
 
     public function beforeIndex()
     {
+        $this->crud()->button()->top('top_create');
         $this->crud()->column('name');
         $this->crud()->column('price');
         $this->crud()->column('sku');

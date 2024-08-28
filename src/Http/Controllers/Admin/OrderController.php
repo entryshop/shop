@@ -12,6 +12,7 @@ class OrderController extends CrudController
 
     public $model = Order::class;
     public $route = 'orders';
+    public $lang = 'shop::order';
 
     public function beforeIndex()
     {
