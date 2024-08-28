@@ -10,7 +10,7 @@
         ]
     },
     "require": {
-        "entryshop/admin": "*"
+        "entryshop/core": "*"
     },
     "extra": {
         "laravel": {
