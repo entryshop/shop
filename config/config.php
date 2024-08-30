@@ -15,6 +15,7 @@ return [
         Shop\Contracts\ProductVariant::class => Shop\Models\ProductVariant::class,
         Shop\Contracts\Price::class          => Shop\Support\Price::class,
     ],
+    'register_admin_menus'      => false,
     'default_currency'          => 'USD',
     'default_currency_decimals' => 0,
     'cart'                      => [

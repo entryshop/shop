@@ -11,9 +11,12 @@ class CreateOrder extends AbstractAction
     public static function execute(Cart $cart, ...$args)
     {
         $order = app(Order::class)->create([
-            'cart_id' => $cart->getKey(),
-            'total'   => $cart->total,
-            'number'  => 1000 + app(Order::class)->count(),
+            'cart_id'      => $cart->getKey(),
+            'total'        => $cart->total,
+            'shopper_type' => $cart->shopper_type,
+            'shopper_id'   => $cart->shopper_id,
+            'currency'     => $cart->currency,
+            'number'       => 1000 + app(Order::class)->count(),
         ]);
 
         if ($cart->shopper) {
