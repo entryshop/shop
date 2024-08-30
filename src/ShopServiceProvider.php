@@ -36,7 +36,7 @@ class ShopServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/admin.php');
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'shop');
         $this->registerObservers();
-        $this->registerAdminMenu();
+//        $this->registerAdminMenu();
     }
 
     protected function registerObservers(): void
