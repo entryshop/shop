@@ -9,9 +9,6 @@
             "src/helpers.php"
         ]
     },
-    "require": {
-        "entryshop/core": "*"
-    },
     "extra": {
         "laravel": {
             "providers": [
