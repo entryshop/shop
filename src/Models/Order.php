@@ -56,6 +56,8 @@ class Order extends Model implements OrderContract
             'lines',
             'shopper',
             'currency',
+            'external_id',
+            'external_platform',
         ];
     }
 

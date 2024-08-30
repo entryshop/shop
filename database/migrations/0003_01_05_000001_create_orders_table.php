@@ -17,6 +17,8 @@ return new class extends Migration {
             $table->string('status')->nullable()->index();
             $table->string('currency')->nullable()->index();
             $table->string('payment_status')->nullable()->index();
+            $table->string('external_id')->nullable()->index();
+            $table->string('external_platform')->nullable()->index();
             $table->string('fulfillment_status')->nullable()->index();
             $table->unsignedBigInteger('total')->nullable()->index();
             $table->foreignId('currency_id')->nullable()->index();
