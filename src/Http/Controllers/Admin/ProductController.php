@@ -17,8 +17,28 @@ class ProductController extends CrudController
     public function beforeIndex()
     {
         $this->crud()->button()->top('top_create');
+        $this->crud()->button()->inline('inline_edit');
         $this->crud()->column('name');
         $this->crud()->column('price');
         $this->crud()->column('sku');
+        $this->crud()->column('inventory');
+    }
+
+    public function beforeForm()
+    {
+        $this->crud()->field('name');
+        $this->crud()->field('price');
+        $this->crud()->field('sku');
+        $this->crud()->field('inventory');
+        $this->crud()->field('images')->type('attachments');
+    }
+
+    public function beforeShow()
+    {
+        $this->crud()->column('name');
+        $this->crud()->column('price');
+        $this->crud()->column('sku');
+        $this->crud()->column('inventory');
+        $this->crud()->column('images')->type('attachments');
     }
 }
