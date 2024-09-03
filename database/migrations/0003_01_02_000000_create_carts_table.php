@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('session_id')->nullable()->index();
             $table->string('status')->nullable()->index();
             $table->string('currency')->nullable()->index();
-            $table->unsignedBigInteger('total')->nullable();
+            $table->decimal('total', 26, 8)->nullable();
             $table->string('hash')->nullable()->unique();
             $table->boolean('active')->default(true)->index();
             $table->mediumText('data')->nullable();

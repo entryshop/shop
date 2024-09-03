@@ -20,8 +20,7 @@ return new class extends Migration {
             $table->string('external_id')->nullable()->index();
             $table->string('external_platform')->nullable()->index();
             $table->string('fulfillment_status')->nullable()->index();
-            $table->unsignedBigInteger('total')->nullable()->index();
-            $table->foreignId('currency_id')->nullable()->index();
+            $table->decimal('total', 26, 8)->nullable();
             $table->mediumText('data')->nullable();
             $table->timestamps();
             $table->softDeletes();

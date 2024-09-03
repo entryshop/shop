@@ -40,9 +40,7 @@ class ImportCountries extends Command
         $countries = Http::get('http://data.lunarphp.io/countries+states.json')
             ->object();
 
-        $newCountries = collect($countries)->filter(function ($country) use ($existing) {
-            return !$existing->contains($country->iso3);
-        });
+        $newCountries = collect($countries)->filter(fn($country) => !$existing->contains($country->iso3));
 
         if (!$newCountries->count()) {
             $this->components->info('There are no new countries to import');
@@ -66,12 +64,10 @@ class ImportCountries extends Command
                     'emoji_u'   => $country->emojiU,
                 ]);
 
-                $states = collect($country->states)->map(function ($state) {
-                    return [
-                        'name' => $state->name,
-                        'code' => $state->state_code,
-                    ];
-                });
+                $states = collect($country->states)->map(fn($state) => [
+                    'name' => $state->name,
+                    'code' => $state->state_code,
+                ]);
 
                 $model->states()->createMany($states->toArray());
 

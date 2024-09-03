@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->nullableMorphs('purchasable');
             $table->string('status')->nullable()->index();
             $table->integer('quantity')->default(1)->index();
-            $table->string('price', 14)->nullable()->index();
-            $table->string('total', 14)->default(0);
+            $table->decimal('price', 26, 8)->nullable();
+            $table->decimal('total', 26, 8)->nullable();
             $table->mediumText('data')->nullable();
             $table->timestamps();
         });

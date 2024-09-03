@@ -4,7 +4,11 @@ use Entryshop\Shop;
 use Entryshop\Shop\Pipelines;
 
 return [
-    'bindings'                  => [
+    'admin'    => [
+        'enable'        => true,
+        'register_menu' => true,
+    ],
+    'bindings' => [
         Shop\Contracts\CartService::class    => Shop\Services\CartService::class,
         Shop\Contracts\PaymentService::class => Shop\Services\PaymentService::class,
         Shop\Contracts\Cart::class           => Shop\Models\Cart::class,
@@ -15,7 +19,6 @@ return [
         Shop\Contracts\ProductVariant::class => Shop\Models\ProductVariant::class,
         Shop\Contracts\Price::class          => Shop\Support\Price::class,
     ],
-    'register_admin_menus'      => false,
     'default_currency'          => 'USD',
     'default_currency_decimals' => 0,
     'cart'                      => [
@@ -28,14 +31,12 @@ return [
             'cash-on-delivery' => Shop\PaymentTypes\CashOnDeliveryPayment::class,
         ],
     ],
-
-    'actions' => [
+    'actions'                   => [
         'add_to_cart'            => Shop\Actions\Carts\AddOrUpdatePurchasable::class,
         'create_order'           => Shop\Actions\Carts\CreateOrder::class,
         'get_existing_cart_line' => Shop\Actions\Carts\GetExistingCartLine::class,
         'hash_generate'          => Shop\Actions\Carts\CartHashGenerator::class,
     ],
-
     'pipelines' => [
         'cart_calculate' => [
             Pipelines\Carts\LineCalculator::class,
