@@ -4,6 +4,7 @@ namespace Entryshop\Shop\Models;
 
 use Entryshop\Admin\Support\Model\HasReference;
 use Entryshop\Admin\Support\Model\VirtualColumn;
+use Entryshop\Admin\Support\Searchable;
 use Entryshop\Shop\Contracts\Cart as CartContract;
 use Entryshop\Shop\Contracts\Line as LineContract;
 use Entryshop\Shop\Contracts\Order as OrderContract;
@@ -18,6 +19,15 @@ class Order extends Model implements OrderContract
     use VirtualColumn;
     use HasReference;
     use SoftDeletes;
+    use Searchable;
+
+    protected $searches = [
+        'number',
+        'external_id',
+        'data',
+        'shopper.email',
+        'shopper.name',
+    ];
 
     protected $guarded = [];
     protected static $reference_prefix = 'ord_';
