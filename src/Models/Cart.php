@@ -66,14 +66,18 @@ class Cart extends Model implements CartContract
     public function updateLine($line_id, $quantity = 1, $data = [], $refresh = true)
     {
         $line = $this->lines()->findOrFail($line_id);
-        return app(
+        hook_action('cart.line.updating', $line);
+        $cart = app(
             config('shop.actions.add_to_cart', AddOrUpdatePurchasable::class)
         )->execute($this, $line, $quantity, $data)
             ->then(fn() => $refresh ? $this->refresh()->calculate() : $this);
+        hook_action('cart.line.updated', $line);
+        return $cart;
     }
 
     public function add(Purchasable $purchasable, $quantity = 1, $data = [], $refresh = true)
     {
+        hook_action('cart.line.adding', compact('purchasable', 'quantity', 'data'));
         return app(
             config('shop.actions.add_to_cart', AddOrUpdatePurchasable::class)
         )->execute($this, $purchasable, $quantity, $data)

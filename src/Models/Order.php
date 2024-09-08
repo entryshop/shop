@@ -68,7 +68,7 @@ class Order extends Model implements OrderContract
             'currency',
             'external_id',
             'external_platform',
+            'deleted_at',
         ];
     }
-
 }

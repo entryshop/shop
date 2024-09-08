@@ -16,7 +16,7 @@ class AddOrUpdatePurchasable extends AbstractAction
         $LineOrPurchasable = null,
         int $quantity = 1,
         array $data = []
-    ): self {
+    ) {
         throw_if(!$quantity, InvalidCartLineQuantityException::class);
 
         if ($LineOrPurchasable instanceof Line) {

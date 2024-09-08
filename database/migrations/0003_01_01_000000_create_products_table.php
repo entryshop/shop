@@ -18,6 +18,8 @@ return new class extends Migration {
         Schema::create('product_options', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
+            $table->integer('order')->nullable();
+            $table->mediumText('data')->nullable();
             $table->timestamps();
         });
 
@@ -26,12 +28,14 @@ return new class extends Migration {
             $table->foreignId('product_option_id');
             $table->string('name')->nullable();
             $table->integer('order')->nullable();
+            $table->mediumText('data')->nullable();
             $table->timestamps();
         });
 
         Schema::create('product_variants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id');
+            $table->text('attributes')->nullable();
             $this->productCommonFields($table);
             $table->softDeletes();
         });
@@ -39,11 +43,12 @@ return new class extends Migration {
 
     private function productCommonFields($table)
     {
-        $table->string('status')->nullable();
-        $table->unsignedInteger('price')->nullable();
-        $table->unsignedInteger('compare_price')->nullable();
-        $table->string('sku')->unique()->nullable()->index();
-        $table->mediumText('description')->nullable();
+        $table->string('type')->nullable()->index();
+        $table->string('status')->nullable()->index();
+        $table->string('sku')->nullable()->index();
+        $table->decimal('price', 26, 8)->nullable();
+        $table->decimal('compare_price', 26, 8)->nullable()->index();
+        $table->mediumText('description')->nullable()->index();
         $table->string('name')->nullable();
         $table->text('images')->nullable();
         $table->mediumText('data')->nullable();
@@ -53,6 +58,8 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('products');
+        Schema::dropIfExists('product_options');
+        Schema::dropIfExists('product_option_values');
         Schema::dropIfExists('product_variants');
     }
 };
