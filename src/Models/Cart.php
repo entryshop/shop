@@ -31,6 +31,7 @@ class Cart extends Model implements CartContract
 
     protected $casts = [
         'active' => 'boolean',
+        'locked_until' => 'datetime'
     ];
 
     public function scopeActive($query)
