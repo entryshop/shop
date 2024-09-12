@@ -48,7 +48,7 @@ return new class extends Migration {
         $table->string('sku')->nullable()->index();
         $table->decimal('price', 26, 8)->nullable();
         $table->decimal('compare_price', 26, 8)->nullable()->index();
-        $table->mediumText('description')->nullable()->index();
+        $table->mediumText('description')->nullable();
         $table->string('name')->nullable();
         $table->text('images')->nullable();
         $table->mediumText('data')->nullable();
