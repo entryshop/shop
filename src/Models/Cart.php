@@ -117,7 +117,6 @@ class Cart extends Model implements CartContract
 
     public function calculate()
     {
-        $this->beforeUpdate();
         $cart = app(Pipeline::class)
             ->send($this)
             ->through(
@@ -140,7 +139,6 @@ class Cart extends Model implements CartContract
 
     public function validate($throw = true)
     {
-        $this->beforeUpdate();
         $result = app(Pipeline::class)
             ->send([
                 'cart'   => $this,
