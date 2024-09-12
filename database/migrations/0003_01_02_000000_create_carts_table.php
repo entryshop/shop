@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->decimal('total', 26, 8)->nullable();
             $table->string('hash')->nullable()->unique();
             $table->boolean('active')->default(true)->index();
+            $table->dateTime('locked_until')->nullable();
             $table->mediumText('data')->nullable();
             $table->timestamps();
         });

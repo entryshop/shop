@@ -11,6 +11,7 @@ use Entryshop\Shop\Contracts;
 use Entryshop\Shop\Contracts\Cart as CartContract;
 use Entryshop\Shop\Contracts\Purchasable;
 use Entryshop\Shop\Events\Orders\OrderCreated;
+use Entryshop\Shop\Exceptions\ShopException;
 use Entryshop\Shop\Pipelines\Carts\CartCalculator;
 use Entryshop\Shop\Pipelines\Carts\CartValidator;
 use Entryshop\Shop\Support\Price;
@@ -77,6 +78,7 @@ class Cart extends Model implements CartContract
 
     public function updateLine($line_id, $quantity = 1, $data = [], $refresh = true)
     {
+        $this->beforeUpdate();
         $line = $this->lines()->findOrFail($line_id);
         hook_action('cart.line.updating', $line);
         $cart = app(
@@ -89,6 +91,7 @@ class Cart extends Model implements CartContract
 
     public function add(Purchasable $purchasable, $quantity = 1, $data = [], $refresh = true)
     {
+        $this->beforeUpdate();
         hook_action('cart.line.adding', compact('purchasable', 'quantity', 'data'));
         return app(
             config('shop.actions.add_to_cart', AddOrUpdatePurchasable::class)
@@ -98,6 +101,7 @@ class Cart extends Model implements CartContract
 
     public function deleteLine($line, $refresh = true)
     {
+        $this->beforeUpdate();
         if ($line instanceof Contracts\Line) {
             $line = $this->lines()->findOrFail($line->getKey());
         } else {
@@ -112,6 +116,7 @@ class Cart extends Model implements CartContract
 
     public function calculate()
     {
+        $this->beforeUpdate();
         $cart = app(Pipeline::class)
             ->send($this)
             ->through(
@@ -134,6 +139,7 @@ class Cart extends Model implements CartContract
 
     public function validate($throw = true)
     {
+        $this->beforeUpdate();
         $result = app(Pipeline::class)
             ->send([
                 'cart'   => $this,
@@ -162,6 +168,39 @@ class Cart extends Model implements CartContract
         ]);
     }
 
+    public function lock($minutes = 5)
+    {
+        $this->update([
+            'locked_until' => now()->addMinutes($minutes),
+        ]);
+        return $this;
+    }
+
+    public function beforeUpdate()
+    {
+        if (!$this->canUpdate()) {
+            throw new ShopException('Can not update cart now');
+        }
+    }
+
+    public function unLock()
+    {
+        $this->update([
+            'locked_until' => null,
+        ]);
+        return $this;
+    }
+
+    public function isLocked(): bool
+    {
+        return !is_null($this->locked_until) && $this->locked_until->isFuture();
+    }
+
+    public function canUpdate()
+    {
+        return $this->active && !$this->isLocked();
+    }
+
     public static function getCustomColumns(): array
     {
         return [
@@ -179,6 +218,7 @@ class Cart extends Model implements CartContract
             'order',
             'lines',
             'shopper',
+            'locked_until',
             'currency',
         ];
     }
