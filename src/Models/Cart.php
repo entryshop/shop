@@ -9,6 +9,7 @@ use Entryshop\Shop\Actions\Carts\CartHashGenerator;
 use Entryshop\Shop\Contracts;
 use Entryshop\Shop\Contracts\Cart as CartContract;
 use Entryshop\Shop\Contracts\Purchasable;
+use Entryshop\Shop\Events\Orders\OrderCreated;
 use Entryshop\Shop\Pipelines\Carts\CartCalculator;
 use Entryshop\Shop\Pipelines\Carts\CartValidator;
 use Entryshop\Shop\Support\Price;
@@ -52,21 +53,24 @@ class Cart extends Model implements CartContract
 
     public function createOrder(...$args)
     {
-        app(Pipeline::class)
-            ->send($this)
-            ->through(
-                config('shop.pipelines.order_creating')
-            );
+        hook_action('cart.order.creating', [
+            'cart' => $this,
+            ...$args,
+        ]);
 
         $order = app(
             config('shop.actions.create_order')
         )->execute($this, ...$args);
 
-        return app(Pipeline::class)
+        $order = app(Pipeline::class)
             ->send($order)
             ->through(
                 config('shop.pipelines.order_created')
             )->thenReturn();
+
+        OrderCreated::dispatch($order);
+
+        return $order;
     }
 
     public function updateLine($line_id, $quantity = 1, $data = [], $refresh = true)

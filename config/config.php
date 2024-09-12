@@ -45,8 +45,6 @@ return [
         'cart_validate'  => [
             Pipelines\Carts\CartValidator::class,
         ],
-        'order_creating' => [
-        ],
         'order_created'  => [
             Pipelines\Orders\UpdateOrderFulfillmentStatus::class,
         ],
