@@ -52,6 +52,12 @@ class Cart extends Model implements CartContract
 
     public function createOrder(...$args)
     {
+        app(Pipeline::class)
+            ->send($this)
+            ->through(
+                config('shop.pipelines.order_creating')
+            );
+
         $order = app(
             config('shop.actions.create_order')
         )->execute($this, ...$args);

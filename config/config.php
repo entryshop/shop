@@ -4,11 +4,11 @@ use Entryshop\Shop;
 use Entryshop\Shop\Pipelines;
 
 return [
-    'admin'    => [
+    'admin'                     => [
         'enable'        => true,
         'register_menu' => true,
     ],
-    'bindings' => [
+    'bindings'                  => [
         Shop\Contracts\CartService::class    => Shop\Services\CartService::class,
         Shop\Contracts\PaymentService::class => Shop\Services\PaymentService::class,
         Shop\Contracts\Cart::class           => Shop\Models\Cart::class,
@@ -37,13 +37,15 @@ return [
         'get_existing_cart_line' => Shop\Actions\Carts\GetExistingCartLine::class,
         'hash_generate'          => Shop\Actions\Carts\CartHashGenerator::class,
     ],
-    'pipelines' => [
+    'pipelines'                 => [
         'cart_calculate' => [
             Pipelines\Carts\LineCalculator::class,
             Pipelines\Carts\CartCalculator::class,
         ],
         'cart_validate'  => [
             Pipelines\Carts\CartValidator::class,
+        ],
+        'order_creating' => [
         ],
         'order_created'  => [
             Pipelines\Orders\UpdateOrderFulfillmentStatus::class,
