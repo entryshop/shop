@@ -33,6 +33,7 @@ return [
     ],
     'actions'                   => [
         'add_to_cart'            => Shop\Actions\Carts\AddOrUpdatePurchasable::class,
+        'remove_from_cart'       => Shop\Actions\Carts\DeleteCartLine::class,
         'create_order'           => Shop\Actions\Carts\CreateOrder::class,
         'get_existing_cart_line' => Shop\Actions\Carts\GetExistingCartLine::class,
         'hash_generate'          => Shop\Actions\Carts\CartHashGenerator::class,

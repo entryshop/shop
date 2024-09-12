@@ -6,6 +6,7 @@ use Entryshop\Admin\Support\Model\HasReference;
 use Entryshop\Admin\Support\Model\VirtualColumn;
 use Entryshop\Shop\Actions\Carts\AddOrUpdatePurchasable;
 use Entryshop\Shop\Actions\Carts\CartHashGenerator;
+use Entryshop\Shop\Actions\Carts\DeleteCartLine;
 use Entryshop\Shop\Contracts;
 use Entryshop\Shop\Contracts\Cart as CartContract;
 use Entryshop\Shop\Contracts\Purchasable;
@@ -53,14 +54,16 @@ class Cart extends Model implements CartContract
 
     public function createOrder(...$args)
     {
+        $cart = $this->calculate();
+
         hook_action('cart.order.creating', [
-            'cart' => $this,
+            'cart' => $cart,
             ...$args,
         ]);
 
         $order = app(
             config('shop.actions.create_order')
-        )->execute($this, ...$args);
+        )->execute($cart, ...$args);
 
         $order = app(Pipeline::class)
             ->send($order)
@@ -69,7 +72,6 @@ class Cart extends Model implements CartContract
             )->thenReturn();
 
         OrderCreated::dispatch($order);
-
         return $order;
     }
 
@@ -91,6 +93,20 @@ class Cart extends Model implements CartContract
         return app(
             config('shop.actions.add_to_cart', AddOrUpdatePurchasable::class)
         )->execute($this, $purchasable, $quantity, $data)
+            ->then(fn() => $refresh ? $this->refresh()->calculate() : $this);
+    }
+
+    public function deleteLine($line, $refresh = true)
+    {
+        if ($line instanceof Contracts\Line) {
+            $line = $this->lines()->findOrFail($line->getKey());
+        } else {
+            $line = $this->lines()->findOrFail($line);
+        }
+
+        return app(
+            config('shop.actions.remove_from_cart', DeleteCartLine::class)
+        )->execute($line)
             ->then(fn() => $refresh ? $this->refresh()->calculate() : $this);
     }
 
