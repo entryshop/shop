@@ -9,13 +9,16 @@ class CartCalculator
 {
     public static function handle(Cart $cart, Closure $next): Cart
     {
-        $totals = [
+        $sub_total = $cart->lines()->sum('total');
+
+        $totals    = [
             'name'  => 'Sub total',
-            'value' => $cart->lines()->sum('total'),
+            'value' => $sub_total,
         ];
 
         $cart->update([
             'totals' => $totals,
+            'total'  => $sub_total,
         ]);
 
         return $next($cart);
