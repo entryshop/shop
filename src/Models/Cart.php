@@ -30,8 +30,9 @@ class Cart extends Model implements CartContract
     protected $guarded = [];
 
     protected $casts = [
-        'active' => 'boolean',
-        'locked_until' => 'datetime'
+        'active'       => 'boolean',
+        'totals'       => 'array',
+        'locked_until' => 'datetime',
     ];
 
     public function scopeActive($query)
@@ -218,6 +219,7 @@ class Cart extends Model implements CartContract
             'lines',
             'shopper',
             'locked_until',
+            'totals',
             'currency',
         ];
     }
