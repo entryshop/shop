@@ -11,9 +11,11 @@ class CartCalculator
     {
         $sub_total = $cart->lines()->sum('total');
 
-        $totals    = [
-            'name'  => 'Sub total',
-            'value' => $sub_total,
+        $totals = [
+            [
+                'name'  => 'Sub total',
+                'value' => $sub_total,
+            ],
         ];
 
         $cart->update([
