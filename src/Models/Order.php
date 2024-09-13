@@ -29,6 +29,10 @@ class Order extends Model implements OrderContract
         'shopper.name',
     ];
 
+    protected $casts = [
+        'totals' => 'array',
+    ];
+
     protected $guarded = [];
     protected static $reference_prefix = 'ord_';
 
@@ -68,6 +72,7 @@ class Order extends Model implements OrderContract
             'currency',
             'external_id',
             'external_platform',
+            'totals',
             'deleted_at',
         ];
     }

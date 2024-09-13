@@ -18,6 +18,7 @@ class CreateOrder extends AbstractAction
             'currency'     => $cart->currency,
             'email'        => $cart->address['email'] ?? ($cart->shopper?->email ?? null),
             'address'      => $cart->address ?? null,
+            'totals'       => $cart->totals ?? [],
             'number'       => 1000 + app(Order::class)->count(),
         ]);
 
