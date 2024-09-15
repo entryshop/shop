@@ -16,12 +16,12 @@ class Line extends ShopModel implements Contracts\Line
 
     public function cart(): BelongsTo
     {
-        return $this->belongsTo(resolve_class(Contracts\Cart::class));
+        return $this->belongsTo(resolve_class(Contracts\Cart::class), 'cart_id');
     }
 
     public function order(): BelongsTo
     {
-        return $this->belongsTo(resolve_class(Contracts\Order::class));
+        return $this->belongsTo(resolve_class(Contracts\Order::class), 'order_id');
     }
 
     public function purchasable(): MorphTo
@@ -38,6 +38,8 @@ class Line extends ShopModel implements Contracts\Line
             'purchasable_id',
             'purchasable_type',
             'purchasable',
+            'name',
+            'image',
             'status',
             'quantity',
             'price',

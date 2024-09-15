@@ -10,10 +10,10 @@ return [
         Shop\Contracts\PaymentService::class => Shop\Services\PaymentService::class,
         Shop\Contracts\Cart::class           => Shop\Models\Cart::class,
         Shop\Contracts\Order::class          => Shop\Models\Order::class,
-        Shop\Contracts\Transaction::class    => Shop\Models\Transaction::class,
         Shop\Contracts\Line::class           => Shop\Models\Line::class,
         Shop\Contracts\Product::class        => Shop\Models\Product::class,
         Shop\Contracts\ProductVariant::class => Shop\Models\ProductVariant::class,
+        Shop\Contracts\Transaction::class    => Shop\Models\Transaction::class,
     ],
     'database'                  => [
         'prefix' => 'shop_',

@@ -13,6 +13,8 @@ return new class extends ShopMigration {
             $table->foreignUlid('order_id')->nullable()->index();
             $table->foreignUlid('cart_id')->nullable()->index();
             $table->nullableMorphs('purchasable');
+            $table->string('name')->nullable()->index();
+            $table->string('image')->nullable()->index();
             $table->string('status')->nullable()->index();
             $table->integer('quantity')->default(1)->index();
             $table->decimal('price', 26, 8)->nullable();

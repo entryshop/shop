@@ -37,7 +37,7 @@ class Cart extends ShopModel implements Contracts\Cart
 
     public function lines()
     {
-        return $this->hasMany(resolve_class(Contracts\Line::class));
+        return $this->hasMany(resolve_class(Contracts\Line::class), 'cart_id');
     }
 
     public function order(): BelongsTo
@@ -89,7 +89,7 @@ class Cart extends ShopModel implements Contracts\Cart
     public function add(Contracts\Purchasable $purchasable, $quantity = 1, $data = [], $refresh = true)
     {
         $this->beforeUpdate();
-        hook_action('cart.line.adding', compact('purchasable', 'quantity', 'data'));
+        hook_action('cart.line.adding', compact('purchasable', 'quantity', 'data', 'refresh'));
         return app(
             config('shop.actions.add_to_cart', Actions\Carts\AddOrUpdatePurchasable::class)
         )->execute($this, $purchasable, $quantity, $data)

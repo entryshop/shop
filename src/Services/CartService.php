@@ -14,6 +14,7 @@ class CartService implements CartServiceContract
     public function shopper($shopper)
     {
         $this->_shopper = $shopper;
+        return $this;
     }
 
     public function current($create = false)
@@ -24,6 +25,7 @@ class CartService implements CartServiceContract
     public function setCart($cart)
     {
         $this->_cart = $cart;
+        return $this;
     }
 
     public function getCart($create = false)
@@ -57,11 +59,19 @@ class CartService implements CartServiceContract
     {
         $this->_cart->shopper()->associate($shopper);
         $this->_cart->save();
-        return $this->_cart;
+        return $this;
     }
 
     public function session()
     {
         return session()->getId();
+    }
+
+    public function __call($method, $args)
+    {
+        if ($this->_cart) {
+            return $this->_cart->{$method}(...$args);
+        }
+        return $this;
     }
 }
