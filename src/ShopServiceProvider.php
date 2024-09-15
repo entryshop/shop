@@ -5,8 +5,6 @@ namespace Entryshop\Shop;
 use Entryshop\Shop\Console\Commands\ImportCountries;
 use Entryshop\Shop\Contracts\CartService;
 use Entryshop\Shop\Contracts\PaymentService;
-use Entryshop\Shop\Contracts\Product;
-use Entryshop\Shop\Observers\ProductObserver;
 use Illuminate\Support\ServiceProvider;
 
 class ShopServiceProvider extends ServiceProvider
@@ -34,8 +32,15 @@ class ShopServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'shop');
-        $this->registerObservers();
 
+        if ($this->app->runningInConsole()) {
+            $this->registerCommands();
+        }
+        $this->registerObservers();
+    }
+
+    protected function registerCommands(): void
+    {
         $this->commands([
             ImportCountries::class,
         ]);
@@ -43,7 +48,5 @@ class ShopServiceProvider extends ServiceProvider
 
     protected function registerObservers(): void
     {
-        app(resolve_class(Product::class))::observe(ProductObserver::class);
     }
-
 }
