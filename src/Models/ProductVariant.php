@@ -3,11 +3,11 @@
 namespace Entryshop\Shop\Models;
 
 use Entryshop\Admin\Support\Model\VirtualColumn;
+use Entryshop\Shop\Base\ShopModel;
 use Entryshop\Shop\Contracts\Purchasable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ProductVariant extends Model implements Purchasable
+class ProductVariant extends ShopModel implements Purchasable
 {
     use VirtualColumn;
     use SoftDeletes;

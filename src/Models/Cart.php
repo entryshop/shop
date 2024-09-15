@@ -7,6 +7,7 @@ use Entryshop\Admin\Support\Model\VirtualColumn;
 use Entryshop\Shop\Actions\Carts\AddOrUpdatePurchasable;
 use Entryshop\Shop\Actions\Carts\CartHashGenerator;
 use Entryshop\Shop\Actions\Carts\DeleteCartLine;
+use Entryshop\Shop\Base\ShopModel;
 use Entryshop\Shop\Contracts;
 use Entryshop\Shop\Contracts\Cart as CartContract;
 use Entryshop\Shop\Contracts\Purchasable;
@@ -14,13 +15,11 @@ use Entryshop\Shop\Events\Orders\OrderCreated;
 use Entryshop\Shop\Exceptions\ShopException;
 use Entryshop\Shop\Pipelines\Carts\CartCalculator;
 use Entryshop\Shop\Pipelines\Carts\CartValidator;
-use Entryshop\Shop\Support\Price;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Pipeline\Pipeline;
 
-class Cart extends Model implements CartContract
+class Cart extends ShopModel implements CartContract
 {
     use VirtualColumn;
     use HasReference;
@@ -156,16 +155,6 @@ class Cart extends Model implements CartContract
             return true;
         }
         return $result['errors'];
-    }
-
-    public function getTotal($locale = null): Price
-    {
-        return app(Contracts\Price::class, [
-            'value'    => $this->total,
-            'currency' => $this->currency ?? config('shop.default_currency'),
-            'decimals' => config('shop.default_currency_decimals'),
-            'locale'   => $locale ?? app()->getLocale(),
-        ]);
     }
 
     public function lock($minutes = 5)

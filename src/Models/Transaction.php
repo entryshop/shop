@@ -4,13 +4,13 @@ namespace Entryshop\Shop\Models;
 
 use Entryshop\Admin\Support\Model\HasReference;
 use Entryshop\Admin\Support\Model\VirtualColumn;
+use Entryshop\Shop\Base\ShopModel;
 use Entryshop\Shop\Contracts\Cart;
 use Entryshop\Shop\Contracts\Order;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Transaction extends Model implements \Entryshop\Shop\Contracts\Transaction
+class Transaction extends ShopModel implements \Entryshop\Shop\Contracts\Transaction
 {
     use VirtualColumn;
     use HasReference;

@@ -8,7 +8,7 @@ use Entryshop\Shop\Contracts\Order;
 
 class CreateOrder extends AbstractAction
 {
-    public static function execute(Cart $cart, ...$args)
+    public function execute(Cart $cart, ...$args)
     {
         $order = app(Order::class)->create([
             'cart_id'      => $cart->getKey(),

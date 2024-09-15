@@ -5,16 +5,16 @@ namespace Entryshop\Shop\Models;
 use Entryshop\Admin\Support\Model\HasReference;
 use Entryshop\Admin\Support\Model\VirtualColumn;
 use Entryshop\Admin\Support\Searchable;
+use Entryshop\Shop\Base\ShopModel;
 use Entryshop\Shop\Contracts\Cart as CartContract;
 use Entryshop\Shop\Contracts\Line as LineContract;
 use Entryshop\Shop\Contracts\Order as OrderContract;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Order extends Model implements OrderContract
+class Order extends ShopModel implements OrderContract
 {
     use VirtualColumn;
     use HasReference;

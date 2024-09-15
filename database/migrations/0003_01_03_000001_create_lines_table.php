@@ -1,14 +1,14 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+use Entryshop\Shop\Base\ShopMigration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends ShopMigration {
 
     public function up(): void
     {
-        Schema::create('lines', function (Blueprint $table) {
+        Schema::create($this->table('lines'), function (Blueprint $table) {
             $table->id();
             $table->foreignUlid('order_id')->nullable()->index();
             $table->foreignUlid('cart_id')->nullable()->index();
@@ -20,10 +20,5 @@ return new class extends Migration {
             $table->mediumText('data')->nullable();
             $table->timestamps();
         });
-    }
-
-    public function down(): void
-    {
-        Schema::dropIfExists('lines');
     }
 };

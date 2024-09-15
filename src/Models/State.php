@@ -2,15 +2,15 @@
 
 namespace Entryshop\Shop\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Entryshop\Shop\Base\ShopModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class State extends Model
+class State extends ShopModel
 {
     protected $guarded = [];
 
     public function country(): BelongsTo
     {
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(Country::class, 'country_id');
     }
 }

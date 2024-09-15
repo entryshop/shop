@@ -1,21 +1,21 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+use Entryshop\Shop\Base\ShopMigration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends ShopMigration {
 
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create($this->table('products'), function (Blueprint $table) {
             $table->id();
             $table->boolean('has_variants')->default(false);
             $this->productCommonFields($table);
             $table->softDeletes();
         });
 
-        Schema::create('product_options', function (Blueprint $table) {
+        Schema::create($this->table('product_options'), function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
             $table->integer('order')->nullable();
@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('product_option_values', function (Blueprint $table) {
+        Schema::create($this->table('product_option_values'), function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_option_id');
             $table->string('name')->nullable();
@@ -32,9 +32,9 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('product_variants', function (Blueprint $table) {
+        Schema::create($this->table('product_variants'), function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id');
+            $table->foreignId('product_id')->constrained($this->table('products'));
             $table->text('attributes')->nullable();
             $this->productCommonFields($table);
             $table->softDeletes();
@@ -55,11 +55,4 @@ return new class extends Migration {
         $table->timestamps();
     }
 
-    public function down(): void
-    {
-        Schema::dropIfExists('products');
-        Schema::dropIfExists('product_options');
-        Schema::dropIfExists('product_option_values');
-        Schema::dropIfExists('product_variants');
-    }
 };

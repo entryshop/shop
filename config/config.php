@@ -50,4 +50,7 @@ return [
             Pipelines\Orders\UpdateOrderFulfillmentStatus::class,
         ],
     ],
+    'database'                  => [
+        'prefix' => 'shop_',
+    ],
 ];

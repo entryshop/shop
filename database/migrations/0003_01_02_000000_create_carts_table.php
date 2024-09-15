@@ -1,14 +1,14 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+use Entryshop\Shop\Base\ShopMigration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends ShopMigration {
 
     public function up(): void
     {
-        Schema::create('carts', function (Blueprint $table) {
+        Schema::create($this->table('carts'), function (Blueprint $table) {
             $table->id();
             $table->nullableMorphs('shopper');
             $table->string('reference')->unique()->index();
@@ -25,8 +25,4 @@ return new class extends Migration {
         });
     }
 
-    public function down(): void
-    {
-        Schema::dropIfExists('carts');
-    }
 };

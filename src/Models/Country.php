@@ -2,15 +2,15 @@
 
 namespace Entryshop\Shop\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Entryshop\Shop\Base\ShopModel;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Country extends Model
+class Country extends ShopModel
 {
     protected $guarded = [];
 
     public function states(): HasMany
     {
-        return $this->hasMany(State::class);
+        return $this->hasMany(State::class, 'country_id');
     }
 }

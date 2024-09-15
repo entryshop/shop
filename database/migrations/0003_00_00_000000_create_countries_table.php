@@ -1,14 +1,14 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+use Entryshop\Shop\Base\ShopMigration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends ShopMigration {
 
     public function up(): void
     {
-        Schema::create('countries', function (Blueprint $table) {
+        Schema::create($this->table('countries'), function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
             $table->string('iso3')->unique();
@@ -22,19 +22,14 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('states', function (Blueprint $table) {
+        Schema::create($this->table('states'), function (Blueprint $table) {
             $table->id();
-            $table->foreignId('country_id')->nullable()->constrained('countries');
-            $table->string('name');
-            $table->string('code');
+            $table->foreignId('country_id')->nullable()->constrained($this->table('countries'));
+            $table->string('name')->nullable();
+            $table->string('code')->nullable();
             $table->timestamps();
         });
 
     }
 
-    public function down(): void
-    {
-        Schema::dropIfExists('states');
-        Schema::dropIfExists('countries');
-    }
 };
