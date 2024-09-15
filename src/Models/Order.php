@@ -30,7 +30,10 @@ class Order extends ShopModel implements OrderContract
     ];
 
     protected $casts = [
-        'totals' => 'array',
+        'totals'           => 'array',
+        'shipping_address' => 'array',
+        'billing_address'  => 'array',
+        'payments'         => 'array',
     ];
 
     protected $guarded = [];
@@ -74,6 +77,9 @@ class Order extends ShopModel implements OrderContract
             'external_platform',
             'totals',
             'deleted_at',
+            'shipping_address',
+            'billing_address',
+            'payments',
         ];
     }
 }

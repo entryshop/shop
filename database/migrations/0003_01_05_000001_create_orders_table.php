@@ -22,6 +22,9 @@ return new class extends ShopMigration {
             $table->string('fulfillment_status')->nullable()->index();
             $table->decimal('total', 26, 8)->nullable();
             $table->text('totals')->nullable();
+            $table->text('shipping_address')->nullable();
+            $table->text('billing_address')->nullable();
+            $table->text('payments')->nullable();
             $table->mediumText('data')->nullable();
             $table->timestamps();
             $table->softDeletes();

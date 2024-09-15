@@ -205,6 +205,9 @@ class Cart extends ShopModel implements Contracts\Cart
             'totals',
             'currency',
             'channel',
+            'shipping_address',
+            'billing_address',
+            'payments',
         ];
     }
 }
