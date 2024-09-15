@@ -7,7 +7,7 @@ use Entryshop\Shop\Contracts\Cart;
 
 class LineCalculator
 {
-    public static function handle(Cart $cart, Closure $next): Cart
+    public function handle(Cart $cart, Closure $next): Cart
     {
         foreach ($cart->lines as $line) {
             $price = $line->purchasable->price;

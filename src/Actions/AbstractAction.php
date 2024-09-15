@@ -16,6 +16,9 @@ abstract class AbstractAction
 
     public static function run(...$arguments)
     {
+        if (method_exists(static::class, 'handle')) {
+            return static::make()->handle(...$arguments);
+        }
         return static::make()->execute(...$arguments);
     }
 

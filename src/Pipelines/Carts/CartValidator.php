@@ -7,7 +7,7 @@ use Entryshop\Shop\Exceptions\InvalidCartTotalException;
 
 class CartValidator
 {
-    public static function handle($data, Closure $next)
+    public function handle($data, Closure $next)
     {
         $cart  = $data['cart'];
         $throw = $data['throw'];

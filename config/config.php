@@ -1,13 +1,10 @@
 <?php
 
 use Entryshop\Shop;
+use Entryshop\Shop\Actions;
 use Entryshop\Shop\Pipelines;
 
 return [
-    'admin'                     => [
-        'enable'        => true,
-        'register_menu' => true,
-    ],
     'bindings'                  => [
         Shop\Contracts\CartService::class    => Shop\Services\CartService::class,
         Shop\Contracts\PaymentService::class => Shop\Services\PaymentService::class,
@@ -17,7 +14,9 @@ return [
         Shop\Contracts\Line::class           => Shop\Models\Line::class,
         Shop\Contracts\Product::class        => Shop\Models\Product::class,
         Shop\Contracts\ProductVariant::class => Shop\Models\ProductVariant::class,
-        Shop\Contracts\Price::class          => Shop\Support\Price::class,
+    ],
+    'database'                  => [
+        'prefix' => 'shop_',
     ],
     'default_currency'          => 'USD',
     'default_currency_decimals' => 0,
@@ -32,11 +31,11 @@ return [
         ],
     ],
     'actions'                   => [
-        'add_to_cart'            => Shop\Actions\Carts\AddOrUpdatePurchasable::class,
-        'remove_from_cart'       => Shop\Actions\Carts\DeleteCartLine::class,
-        'create_order'           => Shop\Actions\Carts\CreateOrder::class,
-        'get_existing_cart_line' => Shop\Actions\Carts\GetExistingCartLine::class,
-        'hash_generate'          => Shop\Actions\Carts\CartHashGenerator::class,
+        'add_to_cart'            => Actions\Carts\AddOrUpdatePurchasable::class,
+        'remove_from_cart'       => Actions\Carts\DeleteCartLine::class,
+        'create_order'           => Actions\Carts\CreateOrder::class,
+        'get_existing_cart_line' => Actions\Carts\GetExistingCartLine::class,
+        'hash_generate'          => Actions\Carts\CartHashGenerator::class,
     ],
     'pipelines'                 => [
         'cart_calculate' => [
@@ -50,7 +49,5 @@ return [
             Pipelines\Orders\UpdateOrderFulfillmentStatus::class,
         ],
     ],
-    'database'                  => [
-        'prefix' => 'shop_',
-    ],
+
 ];

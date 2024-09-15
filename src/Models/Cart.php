@@ -4,34 +4,30 @@ namespace Entryshop\Shop\Models;
 
 use Entryshop\Admin\Support\Model\HasReference;
 use Entryshop\Admin\Support\Model\VirtualColumn;
-use Entryshop\Shop\Actions\Carts\AddOrUpdatePurchasable;
-use Entryshop\Shop\Actions\Carts\CartHashGenerator;
-use Entryshop\Shop\Actions\Carts\DeleteCartLine;
+use Entryshop\Shop\Actions;
 use Entryshop\Shop\Base\ShopModel;
 use Entryshop\Shop\Contracts;
-use Entryshop\Shop\Contracts\Cart as CartContract;
-use Entryshop\Shop\Contracts\Purchasable;
-use Entryshop\Shop\Events\Orders\OrderCreated;
+use Entryshop\Shop\Events;
 use Entryshop\Shop\Exceptions\ShopException;
-use Entryshop\Shop\Pipelines\Carts\CartCalculator;
-use Entryshop\Shop\Pipelines\Carts\CartValidator;
+use Entryshop\Shop\Pipelines;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Pipeline\Pipeline;
 
-class Cart extends ShopModel implements CartContract
+class Cart extends ShopModel implements Contracts\Cart
 {
     use VirtualColumn;
     use HasReference;
 
-    protected static $reference_prefix = 'cart_';
-
     protected $guarded = [];
 
     protected $casts = [
-        'active'       => 'boolean',
-        'totals'       => 'array',
-        'locked_until' => 'datetime',
+        'active'           => 'boolean',
+        'totals'           => 'array',
+        'locked_until'     => 'datetime',
+        'shipping_address' => 'array',
+        'billing_address'  => 'array',
+        'payments'         => 'array',
     ];
 
     public function scopeActive($query)
@@ -73,7 +69,7 @@ class Cart extends ShopModel implements CartContract
                 config('shop.pipelines.order_created')
             )->thenReturn();
 
-        OrderCreated::dispatch($order);
+        Events\Orders\OrderCreated::dispatch($order);
         return $order;
     }
 
@@ -83,19 +79,19 @@ class Cart extends ShopModel implements CartContract
         $line = $this->lines()->findOrFail($line_id);
         hook_action('cart.line.updating', $line);
         $cart = app(
-            config('shop.actions.add_to_cart', AddOrUpdatePurchasable::class)
+            config('shop.actions.add_to_cart', Actions\Carts\AddOrUpdatePurchasable::class)
         )->execute($this, $line, $quantity, $data)
             ->then(fn() => $refresh ? $this->refresh()->calculate() : $this);
         hook_action('cart.line.updated', $line);
         return $cart;
     }
 
-    public function add(Purchasable $purchasable, $quantity = 1, $data = [], $refresh = true)
+    public function add(Contracts\Purchasable $purchasable, $quantity = 1, $data = [], $refresh = true)
     {
         $this->beforeUpdate();
         hook_action('cart.line.adding', compact('purchasable', 'quantity', 'data'));
         return app(
-            config('shop.actions.add_to_cart', AddOrUpdatePurchasable::class)
+            config('shop.actions.add_to_cart', Actions\Carts\AddOrUpdatePurchasable::class)
         )->execute($this, $purchasable, $quantity, $data)
             ->then(fn() => $refresh ? $this->refresh()->calculate() : $this);
     }
@@ -110,25 +106,24 @@ class Cart extends ShopModel implements CartContract
         }
 
         return app(
-            config('shop.actions.remove_from_cart', DeleteCartLine::class)
+            config('shop.actions.remove_from_cart', Actions\Carts\DeleteCartLine::class)
         )->execute($line)
             ->then(fn() => $refresh ? $this->refresh()->calculate() : $this);
     }
 
     public function calculate()
     {
-        $cart = app(Pipeline::class)
-            ->send($this)
-            ->through(
-                config('shop.pipelines.cart_calculate', [
-                    CartCalculator::class,
-                ])
-            )->thenReturn();
+        $cart = pipeline(
+            passable: $this,
+            through: config('shop.pipelines.cart_calculate', [
+                Pipelines\Carts\CartCalculator::class,
+            ])
+        )->thenReturn();
 
         $cart->save();
 
         $hash = app(
-            config('shop.actions.hash_generate', CartHashGenerator::class)
+            config('shop.actions.hash_generate', Actions\Carts\CartHashGenerator::class)
         )->execute($this);
 
         $cart->update([
@@ -139,17 +134,16 @@ class Cart extends ShopModel implements CartContract
 
     public function validate($throw = true)
     {
-        $result = app(Pipeline::class)
-            ->send([
+        $result = pipeline(
+            passable: [
                 'cart'   => $this,
                 'errors' => [],
                 'throw'  => $throw,
+            ],
+            through: config('shop.pipelines.cart_validate', [
+                Pipelines\Carts\CartValidator::class,
             ])
-            ->through(
-                config('shop.pipelines.cart_validate', [
-                    CartValidator::class,
-                ])
-            )->thenReturn();
+        )->thenReturn();
 
         if (empty($result['errors'])) {
             return true;
@@ -210,6 +204,7 @@ class Cart extends ShopModel implements CartContract
             'locked_until',
             'totals',
             'currency',
+            'channel',
         ];
     }
 }

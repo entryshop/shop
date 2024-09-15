@@ -7,7 +7,7 @@ use Entryshop\Shop\Contracts\Cart;
 
 class CartCalculator
 {
-    public static function handle(Cart $cart, Closure $next): Cart
+    public function handle(Cart $cart, Closure $next): Cart
     {
         $sub_total = $cart->lines()->sum('total');
 
