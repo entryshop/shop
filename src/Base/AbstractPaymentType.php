@@ -39,7 +39,9 @@ abstract class AbstractPaymentType
         return $this;
     }
 
-    abstract public function authorize();
+    public function authorize()
+    {
+    }
 
     public function capture($amount = null)
     {
@@ -47,5 +49,7 @@ abstract class AbstractPaymentType
         Captured::dispatch($this->transaction);
     }
 
-    abstract public function refund($amount = null);
+    public function refund($amount = null)
+    {
+    }
 }
