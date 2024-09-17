@@ -3,6 +3,7 @@
 namespace Entryshop\Shop\Actions\Cart;
 
 use DB;
+use Entryshop\Shop\Actions\Order\GenerateNumber;
 use Entryshop\Shop\Exceptions\ShopException;
 use Entryshop\Shop\Models\Order;
 use Entryshop\Utils\Actions\AsAction;
@@ -20,13 +21,17 @@ class CreateOrder
             }
 
             $order = Order::create([
-                'shopper_id'   => $cart->shopper_id,
-                'shopper_type' => $cart->shopper_type,
-                'cart_id'      => $cart->id,
-                'total'        => $cart->total,
-                'quantity'     => $cart->quantity,
-                'sub_total'    => $cart->sub_total,
-                'totals'       => $cart->totals,
+                'shopper_id'       => $cart->shopper_id,
+                'shopper_type'     => $cart->shopper_type,
+                'cart_id'          => $cart->id,
+                'total'            => $cart->total,
+                'quantity'         => $cart->quantity,
+                'sub_total'        => $cart->sub_total,
+                'totals'           => $cart->totals,
+                'email'            => $cart->shipping_address['email'] ?? '',
+                'shipping_address' => $cart->shipping_address,
+                'billing_address'  => $cart->billing_address,
+                'number'           => GenerateNumber::run(),
             ]);
 
             $order->setData($cart->getOriginalData());

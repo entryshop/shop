@@ -8,6 +8,7 @@ return [
         'prefix' => 'shop_',
     ],
     'bindings' => [
-        Contracts\Cart::class => Models\Cart::class,
+        Contracts\Cart::class  => Models\Cart::class,
+        Contracts\Order::class => Models\Order::class,
     ],
 ];

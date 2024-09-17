@@ -13,7 +13,7 @@ return new class extends ShopMigration {
             $table->nullableMorphs('shopper');
             $table->string('reference')->nullable()->index();
             $table->string('session_id')->nullable()->index();
-            $table->string('hash')->nullable()->unique();
+            $table->string('hash')->nullable()->index();
             $table->boolean('active')->default(true)->index();
             $table->dateTime('locked_until')->nullable();
             $table->text('data')->nullable();

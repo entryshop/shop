@@ -9,7 +9,7 @@ use Entryshop\Utils\Models\Traits\HasReference;
 use Entryshop\Utils\Models\Traits\VirtualColumn;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Order extends ShopModel
+class Order extends ShopModel implements \Entryshop\Shop\Contracts\Order
 {
     use VirtualColumn;
     use SoftDeletes;
@@ -18,7 +18,9 @@ class Order extends ShopModel
     use BelongsToShopper;
 
     protected $casts = [
-        'totals' => 'array',
+        'shipping_address' => 'array',
+        'billing_address'  => 'array',
+        'totals'           => 'array',
     ];
 
     public function lines()
