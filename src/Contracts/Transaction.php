@@ -2,11 +2,18 @@
 
 namespace Entryshop\Shop\Contracts;
 
+use Entryshop\Shop\Models\Order;
+
 /**
  * @property ?Cart $cart
  * @property ?Order $order
- * @property string $status
  */
 interface Transaction
 {
+    public function getPaymentDriver();
+
+    public function getStatus();
+
+    public function setStatus($status);
+
 }

@@ -2,49 +2,32 @@
 
 namespace Entryshop\Shop\Models;
 
-use Entryshop\Admin\Support\Model\HasReference;
-use Entryshop\Admin\Support\Model\VirtualColumn;
 use Entryshop\Shop\Base\ShopModel;
-use Entryshop\Shop\Contracts\Cart;
-use Entryshop\Shop\Contracts\Order;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Entryshop\Shop\Models\Traits\BelongsToCart;
+use Entryshop\Utils\Models\Traits\HasReference;
+use Entryshop\Utils\Models\Traits\VirtualColumn;
 
 class Transaction extends ShopModel implements \Entryshop\Shop\Contracts\Transaction
 {
     use VirtualColumn;
+    use BelongsToCart;
     use HasReference;
-    use SoftDeletes;
 
-    protected $guarded = [];
-    protected static $reference_prefix = 'txn_';
-
-    public function cart(): BelongsTo
+    public function getPaymentDriver()
     {
-        return $this->belongsTo(resolve_class(Cart::class));
+        return $this->payment_type;
     }
 
-    public function order(): BelongsTo
+    public function getStatus()
     {
-        return $this->belongsTo(resolve_class(Order::class));
+        return $this->status;
     }
 
-    public static function getCustomColumns(): array
+    public function setStatus($status)
     {
-        return [
-            'id',
-            'reference',
-            'order_id',
-            'cart_id',
-            'payment_type',
-            'amount',
-            'currency',
-            'status',
-            'order',
-            'cart',
-            'external_id',
-            'created_at',
-            'updated_at',
-        ];
+        $this->update([
+            'status' => $status,
+        ]);
     }
+
 }

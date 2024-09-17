@@ -2,18 +2,17 @@
 
 namespace Entryshop\Shop\Contracts;
 
-/**
- * @property array lines
- * @property integer total
- * @property string hash
- * @property ?Order order
- * @property ?Shopper shopper
- */
 interface Cart
 {
-    public function createOrder();
+    public function add(Purchasable $purchasable, $quantity = 1, $data = []);
+
+    public function updateLine($line, $quantity, $data = null);
+
+    public function remove($line);
 
     public function calculate();
 
-    public function validate($throw = true);
+    public function lines();
+
+    public function createOrder();
 }

@@ -2,17 +2,16 @@
     "name": "entryshop/shop",
     "autoload": {
         "psr-4": {
-            "Entryshop\\Shop\\": "src/",
-            "Entryshop\\Shop\\Database\\Factories\\": "database/factories"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
+            "Entryshop\\Shop\\": "src/"
+        }
+    },
+    "require": {
+        "entryshop/utils": "*"
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Entryshop\\Shop\\ShopServiceProvider"
+                "Entryshop\\Shop\\Providers\\ShopServiceProvider"
             ]
         }
     }

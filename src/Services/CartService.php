@@ -3,75 +3,80 @@
 namespace Entryshop\Shop\Services;
 
 use Entryshop\Shop\Contracts\Cart;
-use Entryshop\Shop\Contracts\CartService as CartServiceContract;
-use Entryshop\Shop\Contracts\Shopper;
 
-class CartService implements CartServiceContract
+/**
+ * @mixin Cart
+ */
+class CartService
 {
-    protected ?Cart $_cart = null;
-    protected ?Shopper $_shopper = null;
+    protected $_cart;
+    protected $_shopper;
 
-    public function shopper($shopper)
+    public function shopper($shopper = null)
     {
+        if (empty($shopper)) {
+            return $this->_shopper;
+        }
         $this->_shopper = $shopper;
         return $this;
     }
 
     public function current($create = false)
     {
-        return $this->getCart($create);
+        if ($this->_cart) {
+            return $this->_cart;
+        }
+
+        if ($this->_shopper) {
+            if ($cart = app(Cart::class)->where([
+                'shopper_id'   => $this->_shopper->id,
+                'shopper_type' => $this->_shopper->getMorphClass(),
+                'active'       => true,
+            ])->first()) {
+                $this->_cart = $cart;
+                return $this->_cart;
+            }
+        }
+
+        if ($create) {
+            if ($this->_shopper) {
+                $data = [
+                    'shopper_id'   => $this->_shopper->id,
+                    'shopper_type' => $this->_shopper->getMorphClass(),
+                ];
+            } else {
+                $data = [
+                    'session_id' => session()->getId(),
+                ];
+            }
+
+            $data['active'] = true;
+
+            $this->_cart = app(Cart::class)
+                ->create($data);
+
+            return $this->_cart;
+        }
+
+        return null;
     }
 
-    public function setCart($cart)
+    public function cart($cart)
     {
         $this->_cart = $cart;
         return $this;
     }
 
-    public function getCart($create = false)
-    {
-        if (empty($this->_cart)) {
-
-            if ($this->_shopper) {
-                $this->_cart = app(Cart::class)
-                    ->where('shopper_id', $this->_shopper->getKey())
-                    ->where('shopper_type', $this->_shopper->getMorphClass())
-                    ->active()
-                    ->first();
-            }
-
-            if (!$this->_cart) {
-                $this->_cart = app(Cart::class)->where('session_id', $this->session())->active()->first();
-            }
-
-            if (!$this->_cart && $create) {
-                $this->_cart = app(Cart::class)->create([
-                    'session_id' => $this->session(),
-                    'active'     => true,
-                ]);
-            }
-        }
-
-        return $this->_cart;
-    }
-
-    public function associate($shopper)
-    {
-        $this->_cart->shopper()->associate($shopper);
-        $this->_cart->save();
-        return $this;
-    }
-
-    public function session()
-    {
-        return session()->getId();
-    }
-
     public function __call($method, $args)
     {
+        if (empty($this->_cart)) {
+            $this->current(true);
+        }
+
         if ($this->_cart) {
             return $this->_cart->{$method}(...$args);
         }
+
         return $this;
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 
 class ShopModel extends Model
 {
+    protected $guarded = [];
 
     public function getTable()
     {

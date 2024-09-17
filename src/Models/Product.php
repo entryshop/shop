@@ -2,32 +2,35 @@
 
 namespace Entryshop\Shop\Models;
 
-use Entryshop\Admin\Support\Model\VirtualColumn;
 use Entryshop\Shop\Base\ShopModel;
-use Entryshop\Shop\Contracts\ProductVariant as ProductVariantContract;
 use Entryshop\Shop\Contracts\Purchasable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Entryshop\Utils\Models\Traits\VirtualColumn;
 
 class Product extends ShopModel implements Purchasable
 {
     use VirtualColumn;
-    use SoftDeletes;
 
-    protected $guarded = [];
-
-    public function getName()
-    {
-        return $this->name;
-    }
+    protected $casts = [
+        'images' => 'array',
+    ];
 
     public function getPrice()
     {
         return $this->price;
     }
 
-    public function variants(): HasMany
+    public function getName()
     {
-        return $this->hasMany(resolve_class(ProductVariantContract::class));
+        return $this->name;
+    }
+
+    public function getSku()
+    {
+        return $this->sku;
+    }
+
+    public function getImage()
+    {
+        return $this->images[0] ?? '';
     }
 }

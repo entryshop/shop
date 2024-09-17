@@ -47,7 +47,6 @@ return new class extends ShopMigration {
         $table->string('status')->nullable()->index();
         $table->string('sku')->nullable()->index();
         $table->decimal('price', 26, 8)->nullable();
-        $table->decimal('compare_price', 26, 8)->nullable()->index();
         $table->mediumText('description')->nullable();
         $table->string('name')->nullable();
         $table->text('images')->nullable();

@@ -2,13 +2,18 @@
 
 namespace Entryshop\Shop\Contracts;
 
-/**
- * @property string $name
- * @property string $image
- * @property numeric getPrice()
- * @property string getMorphClass()
- * @property integer|string getKey()
- */
 interface Purchasable
 {
+    public function getKey();
+
+    public function getMorphClass();
+
+    public function getPrice();
+
+    public function getName();
+
+    public function getSku();
+
+    public function getImage();
+
 }

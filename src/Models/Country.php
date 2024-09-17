@@ -11,6 +11,6 @@ class Country extends ShopModel
 
     public function states(): HasMany
     {
-        return $this->hasMany(State::class, 'country_id');
+        return $this->hasMany(State::class);
     }
 }

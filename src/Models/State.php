@@ -11,6 +11,6 @@ class State extends ShopModel
 
     public function country(): BelongsTo
     {
-        return $this->belongsTo(Country::class, 'country_id');
+        return $this->belongsTo(Country::class);
     }
 }
