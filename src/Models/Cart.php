@@ -10,6 +10,7 @@ use Entryshop\Shop\Actions\Cart\RemoveCartLine;
 use Entryshop\Shop\Actions\Cart\UpdateCartLine;
 use Entryshop\Shop\Base\ShopModel;
 use Entryshop\Shop\Contracts\Purchasable;
+use Entryshop\Shop\Models\Traits\BelongsToShopper;
 use Entryshop\Shop\Models\Traits\Lockable;
 use Entryshop\Utils\Models\Traits\HasReference;
 use Entryshop\Utils\Models\Traits\VirtualColumn;
@@ -20,6 +21,7 @@ class Cart extends ShopModel implements \Entryshop\Shop\Contracts\Cart
     use VirtualColumn;
     use Lockable;
     use HasReference;
+    use BelongsToShopper;
 
     public function lines()
     {
