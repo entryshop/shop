@@ -10,7 +10,8 @@ return new class extends ShopMigration {
     {
         Schema::create($this->table('coupons'), function (Blueprint $table) {
             $table->id();
-            $table->uuid();
+            $table->string('reference')->nullable()->index();
+            $table->string('type')->nullable()->index();
             $table->string('name')->nullable()->index();
             $table->decimal('value', 26, 8)->nullable()->index();
             $table->string('handle')->nullable()->index();
@@ -20,7 +21,7 @@ return new class extends ShopMigration {
 
         Schema::create($this->table('coupon_codes'), function (Blueprint $table) {
             $table->id();
-            $table->uuid();
+            $table->string('reference')->nullable()->index();
             $table->foreignId('coupon_id')->nullable()->index();
             $table->string('code')->nullable()->index();
             $table->string('status')->nullable()->index();
