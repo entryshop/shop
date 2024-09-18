@@ -1,6 +1,6 @@
 <?php
 
-namespace Entryshop\Shop\Cart\Exceptions;
+namespace Entryshop\Shop\Exceptions\Cart;
 
 use Entryshop\Shop\Exceptions\ShopException;
 
