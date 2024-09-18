@@ -2,9 +2,9 @@
 
 namespace Entryshop\Shop\Models;
 
-use Entryshop\Admin\Support\Model\HasReference;
-use Entryshop\Admin\Support\Model\VirtualColumn;
 use Entryshop\Shop\Base\ShopModel;
+use Entryshop\Utils\Models\Traits\VirtualColumn;
+use Entryshop\Utils\Models\Traits\HasReference;
 
 class CouponCode extends ShopModel
 {
