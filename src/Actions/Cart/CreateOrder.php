@@ -4,7 +4,6 @@ namespace Entryshop\Shop\Actions\Cart;
 
 use DB;
 use Entryshop\Shop\Actions\Order\GenerateNumber;
-use Entryshop\Shop\Exceptions\ShopException;
 use Entryshop\Shop\Models\Order;
 use Entryshop\Utils\Actions\AsAction;
 
@@ -17,7 +16,7 @@ class CreateOrder
         $this->passThrough = DB::transaction(function () use ($cart) {
 
             if (!empty($cart->order_id)) {
-                throw new ShopException('Cart already has an order');
+                return $cart->order;
             }
 
             $order = Order::create([
