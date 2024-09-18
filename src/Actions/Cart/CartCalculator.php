@@ -26,7 +26,7 @@ class CartCalculator
 
         $cart->totals    = [];
         $cart->sub_total = $sub_total;
-        $cart->total     = $sub_total;
+        $cart->total     = max(0, $sub_total);
         $cart->quantity  = $cart->lines->sum('quantity');
         return $next($cart);
     }
