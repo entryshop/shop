@@ -40,7 +40,7 @@ return new class extends ShopMigration {
             $table->string('sku')->nullable();
             $table->string('image')->nullable();
             $table->integer('quantity')->nullable();
-            $table->integer('price')->nullable();
+            $table->decimal('price', 26, 8)->nullable();
             $table->decimal('total', 26, 8)->nullable();
             $table->text('data')->nullable();
             $table->timestamps();
