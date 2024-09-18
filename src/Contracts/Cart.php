@@ -7,6 +7,9 @@ namespace Entryshop\Shop\Contracts;
  * @property float $sub_total
  * @property float $total
  * @property array $totals
+ * @property array $shipping_address
+ * @property array $billing_address
+ * @property array $place
  */
 interface Cart
 {
