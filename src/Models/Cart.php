@@ -87,7 +87,7 @@ class Cart extends ShopModel implements \Entryshop\Shop\Contracts\Cart
             config('shop.cart.actions.create_order', CreateOrder::class)
         )
             ->run($cart)
-            ->then(fn($order) => $order->refresh());
+            ->then(fn($order) => $order);
 
         Created::dispatch($order);
 

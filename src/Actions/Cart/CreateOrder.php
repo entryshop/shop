@@ -15,7 +15,7 @@ class CreateOrder
     {
         $this->passThrough = DB::transaction(function () use ($cart) {
 
-            if (!empty($cart->order_id)) {
+            if (!empty($cart->order)) {
                 return $cart->order;
             }
 
