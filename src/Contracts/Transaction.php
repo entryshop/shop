@@ -7,6 +7,8 @@ use Entryshop\Shop\Models\Order;
 /**
  * @property ?Cart $cart
  * @property ?Order $order
+ * @property float $amount
+ * @property string $reference
  */
 interface Transaction
 {
