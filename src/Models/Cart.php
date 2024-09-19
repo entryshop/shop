@@ -66,6 +66,7 @@ class Cart extends ShopModel implements \Entryshop\Shop\Contracts\Cart
 
     public function calculate()
     {
+        $this->refresh();
         $cart = app(Pipeline::class)
             ->send($this)
             ->through(
