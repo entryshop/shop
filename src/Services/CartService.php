@@ -38,6 +38,16 @@ class CartService
             }
         }
 
+        $session_cart = app(Cart::class)->where([
+            'session_id' => session()->getId(),
+            'active'     => true,
+        ])->first();
+
+        if ($session_cart) {
+            $this->_cart = $session_cart;
+            return $this->_cart;
+        }
+
         if ($create) {
             if ($this->_shopper) {
                 $data = [
