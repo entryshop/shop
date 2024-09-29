@@ -28,6 +28,7 @@ return new class extends ShopMigration {
             $table->dateTime('valid_start_at')->nullable()->index();
             $table->dateTime('valid_end_at')->nullable()->index();
             $table->dateTime('used_at')->nullable()->index();
+            $table->nullableMorphs('user');
             $table->mediumText('data')->nullable();
             $table->timestamps();
         });

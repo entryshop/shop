@@ -3,8 +3,8 @@
 namespace Entryshop\Shop\Models;
 
 use Entryshop\Shop\Base\ShopModel;
-use Entryshop\Utils\Models\Traits\VirtualColumn;
 use Entryshop\Utils\Models\Traits\HasReference;
+use Entryshop\Utils\Models\Traits\VirtualColumn;
 
 class CouponCode extends ShopModel
 {
@@ -14,5 +14,10 @@ class CouponCode extends ShopModel
     public function coupon()
     {
         return $this->belongsTo(Coupon::class);
+    }
+
+    public function user()
+    {
+        return $this->morphTo();
     }
 }
