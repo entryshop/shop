@@ -11,16 +11,14 @@ class GenerateFingerprint
 
     public function handle(Cart $cart)
     {
-        $value = $cart->lines->reduce(function (?string $carry, $line) {
-            return $carry .
-                $line->purchasable_type . '_' .
-                $line->purchasable_id . '_' .
-                $line->quantity . '_' .
-                $line->unitPrice . '_' .
-                $line->subTotal . '_' .
-                $line->total . '_' .
-                json_encode($line->getOriginalData());
-        });
+        $value = $cart->lines->reduce(fn(?string $carry, $line) => $carry .
+            $line->purchasable_type . '_' .
+            $line->purchasable_id . '_' .
+            $line->quantity . '_' .
+            $line->unitPrice . '_' .
+            $line->subTotal . '_' .
+            $line->total . '_' .
+            json_encode($line->getOriginalData()));
         $value .= $cart->shopper_id . $cart->sub_total . $cart->total;
         return sha1($value);
     }

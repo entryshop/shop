@@ -2,7 +2,6 @@
 
 namespace Entryshop\Shop\Actions\Cart;
 
-
 use Entryshop\Utils\Actions\AsAction;
 
 class UpdateCartLine

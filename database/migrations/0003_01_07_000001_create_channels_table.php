@@ -13,7 +13,7 @@ return new class extends ShopMigration {
             $table->string('reference')->nullable()->index();
             $table->string('name')->nullable()->index();
             $table->string('status')->nullable()->index();
-            $table->boolean('is_default')->nullable()->index();
+            $table->boolean('default')->nullable()->index();
             $table->mediumText('data')->nullable();
             $table->timestamps();
         });

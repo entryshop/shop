@@ -2,10 +2,10 @@
 
 namespace Entryshop\Shop\Actions\Cart;
 
-use DB;
 use Entryshop\Shop\Actions\Order\GenerateNumber;
 use Entryshop\Shop\Models\Order;
 use Entryshop\Utils\Actions\AsAction;
+use Illuminate\Support\Facades\DB;
 
 class CreateOrder
 {
