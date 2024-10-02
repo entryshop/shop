@@ -11,7 +11,7 @@ return new class extends ShopMigration {
         Schema::create($this->table('countries'), function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->string('iso3')->unique();
+            $table->string('iso3')->unique()->nullable();
             $table->string('iso2')->unique()->nullable();
             $table->string('phonecode')->nullable();
             $table->string('capital')->nullable();
@@ -24,7 +24,7 @@ return new class extends ShopMigration {
 
         Schema::create($this->table('states'), function (Blueprint $table) {
             $table->id();
-            $table->foreignId('country_id')->nullable()->constrained($this->table('countries'));
+            $table->foreignId('country_id')->nullable();
             $table->string('name')->nullable();
             $table->string('code')->nullable();
             $table->timestamps();
