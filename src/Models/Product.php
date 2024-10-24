@@ -4,11 +4,13 @@ namespace Entryshop\Shop\Models;
 
 use Entryshop\Shop\Base\ShopModel;
 use Entryshop\Shop\Contracts\Purchasable;
+use Entryshop\Utils\Models\Traits\Searchable;
 use Entryshop\Utils\Models\Traits\VirtualColumn;
 
 class Product extends ShopModel implements Purchasable
 {
     use VirtualColumn;
+    use Searchable;
 
     protected $casts = [
         'images' => 'array',
